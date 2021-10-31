@@ -11,6 +11,8 @@ let playerWalk;
 let idleAnim;
 let walkAnim;
 
+let ui;
+
 function preload() {
     mapFile = loadImage("assets/tileMap.png");
     wall = loadImage("assets/tile.png");
@@ -34,6 +36,8 @@ function setup() {
     player = new Player();
     player.generate(1200, 0);
 
+    ui = new UI();
+
 }
  
 
@@ -46,6 +50,9 @@ function draw() {
     map.draw();
     player.control();
     player.sprite.collide(map.blocks);
+
+    // no idea why a rectangle isn't showing up on the canvas?
+    ui.all(100, 100);
 
 }
 
