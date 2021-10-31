@@ -26,7 +26,7 @@ function setup() {
 function draw() {
     background(0);
     
-    drawSprites();
+    drawSprite(player.sprite);
 
     map.draw();
     player.control();
