@@ -5,7 +5,6 @@ let wall;
 
 let player;
 
-let bodies = [];
 
 function preload() {
     mapFile = loadImage("assets/tileMap.png");
@@ -18,13 +17,10 @@ function setup() {
     frameRate(60);
     
     map = new Map();
-    map.generate(mapFile, wall);
+    map.generate(mapFile, wall, 0, -200);
 
     player = new Player();
     player.generate(100, 100);
-
-    bodies[1] = new Body(500, 500, 50, [10, 100, 100]);
-    bodies[2] = new Body(700, 500, 50, [10, 100, 100]);
 
 }
  
