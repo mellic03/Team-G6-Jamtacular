@@ -5,6 +5,8 @@ let wall;
 
 let player;
 
+let bodies = [];
+
 function preload() {
     mapFile = loadImage("assets/tileMap.png");
     wall = loadImage("assets/tile.png");
@@ -20,13 +22,17 @@ function setup() {
 
     player = new Player();
     player.generate(100, 100);
+
+    bodies[1] = new Body(500, 500, 50, [10, 100, 100]);
+    bodies[2] = new Body(700, 500, 50, [10, 100, 100]);
+
 }
  
 
 function draw() {
     background(0);
-    
     drawSprite(player.sprite);
+
 
     map.draw();
     player.control();
