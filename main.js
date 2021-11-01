@@ -12,6 +12,8 @@ let idleAnim;
 let walkAnim;
 
 let ui;
+let rayCast;
+
 
 function preload() {
     mapFile = loadImage("assets/tileMap.png");
@@ -30,33 +32,26 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
     
-    map = new Map();
+    map = new Map("");
     map.generate(mapFile, wall, door, 0, -200);
 
     player = new Player();
-    player.generate(1200, 0);
+    player.generate(1200, 100);
 
-    // pass in player object into ui class
-    ui = new UI(player);
-
+    ui = new UI(player);    // pass in player object into ui class
 }
  
 
 function draw() {
     background(0);
 
-    drawSprite(player.sprite);
-    drawSprites();
-    
     map.draw();
+
+    drawSprite(player.sprite);
+    
     player.control();
     player.sprite.collide(map.blocks);
 
     // draws ui box
     ui.draw(50, 50);
-
-}
-
-function keyPressed() {
-    //requestPointerLock();
 }
