@@ -51,8 +51,8 @@ function draw() {
     player.control();
     player.sprite.collide(map.blocks);
 
-    // no idea why a rectangle isn't showing up on the canvas?
-    ui.all(100, 100);
+    // draws ui box
+    ui.draw(50, 50);
 
 }
 
