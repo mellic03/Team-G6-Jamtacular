@@ -32,7 +32,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
     
-    map = new Map("");
+    map = new Map("");  // change to map = new Map("raycasted") for raycasting
     map.generate(mapFile, wall, door, 0, -200);
 
     player = new Player();
