@@ -11,6 +11,8 @@ let playerWalk;
 let idleAnim;
 let walkAnim;
 
+let ui;
+
 function preload() {
     mapFile = loadImage("assets/tileMap.png");
     wall = loadImage("assets/tile.png");
@@ -34,6 +36,9 @@ function setup() {
     player = new Player();
     player.generate(1200, 0);
 
+    // pass in player object into ui class
+    ui = new UI(player);
+
 }
  
 
@@ -46,6 +51,9 @@ function draw() {
     map.draw();
     player.control();
     player.sprite.collide(map.blocks);
+
+    // draws ui box
+    ui.draw(50, 50);
 
 }
 
