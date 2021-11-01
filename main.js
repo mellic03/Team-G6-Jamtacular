@@ -50,6 +50,7 @@ function draw() {
     drawSprite(player.sprite);
     
     player.control();
+    player.sprite.mirrorX(Math.sign(player.sprite.velocity.x));
     player.sprite.collide(map.blocks);
 
     // draws ui box
