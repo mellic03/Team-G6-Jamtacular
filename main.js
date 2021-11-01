@@ -34,7 +34,10 @@ function setup() {
     map.generate(mapFile, wall, door, 0, -200);
 
     player = new Player();
-    player.generate(1200, 0);
+    player.generate(100, 100);
+    
+    enemy = new Enemy();
+    enemy.generate(440,330);
 
     // pass in player object into ui class
     ui = new UI(player);
@@ -55,6 +58,7 @@ function draw() {
     // draws ui box
     ui.draw(50, 50);
 
+    enemy.logic(player)
 }
 
 function keyPressed() {
