@@ -37,7 +37,7 @@ function setup() {
     player.generate(100, 100);
     
     enemy = new Enemy();
-    enemy.generate(440,330);
+    enemy.generate(440,110);
 
     // pass in player object into ui class
     ui = new UI(player);
@@ -54,7 +54,7 @@ function draw() {
     map.draw();
     player.control();
     player.sprite.collide(map.blocks);
-
+    player.sprite.mirrorX(Math.sign(player.sprite.velocity.x));
     // draws ui box
     ui.draw(50, 50);
 
