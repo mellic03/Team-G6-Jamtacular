@@ -36,7 +36,8 @@ function setup() {
     player = new Player();
     player.generate(1200, 0);
 
-    ui = new UI();
+    // pass in player object into ui class
+    ui = new UI(player);
 
 }
  
