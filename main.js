@@ -30,7 +30,7 @@ let hpBarRed;
 function preload() {
     
     // tilemaps
-    bgTilemap = loadImage("assets/img/map/bg_tilemap.png");
+    bgTilemap = loadImage("assets/img/map/bg_tileMap.png");
     mainTilemap = loadImage("assets/img/map/tileMap.png");
 
     // map assets
