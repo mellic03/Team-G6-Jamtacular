@@ -31,6 +31,9 @@ function preload() {
     pistol = loadImage("assets/img/weapon/pistol.png");
     idleAnim = loadAnimation(playerIdle);
     walkAnim = loadAnimation(playerWalk);
+
+    // fonts
+    myFont = loadFont("assets/fonts/FirstJob.ttf");
 }
 
 
@@ -53,7 +56,7 @@ function draw() {
     player.sprite.collide(map.blocks);
     drawSprites();
     // draws ui box
-    ui.draw(50, 50);
+    ui.draw(20, 20);
 
 
 
