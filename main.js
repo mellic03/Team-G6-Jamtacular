@@ -1,11 +1,13 @@
 
-let rayCastOn = false;
 
-let map;
-let mapFile;
-let wall;
+let bgMap;
+let brickbg;
+
+let concreteMap;
+let mainTilemap;
+let concreteImg;
 let brickImg;
-let door;
+let doorImg;
 
 let player;
 let playerIdle;
@@ -28,10 +30,18 @@ let rayCast;
 
 
 function preload() {
-    mapFile = loadImage("assets/img/map/tileMap.png");
-    wall = loadImage("assets/img/map/tile.png");
-    brickImg = loadImage("assets/img/map/brick.png");
-    door = loadImage("assets/img/map/door.png");
+    
+    // tilemaps
+    bgTilemap = loadImage("assets/img/map/bg_tilemap.png");
+    mainTilemap = loadImage("assets/img/map/tileMap.png");
+
+    // tile images
+    concreteImg = loadImage("assets/img/map/grey_brick.png");
+    grassBrickImg = loadImage("assets/img/map/grass_brick.png");
+    doorImg = loadImage("assets/img/map/door.png");
+    redBrickImg = loadImage("assets/img/map/red_brick.png");
+    brickbg = loadImage("assets/img/map/brickbg.png");
+
 
     playerIdle = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
     playerWalk = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
@@ -54,8 +64,14 @@ function setup() {
     createCanvas(800, 600);
     frameRate(60);
     
-    map = new Map("");  // change to map = new Map("raycasted") for raycasting
-    map.generate(mapFile, wall, brickImg, door, 0, -200);
+
+    bgMap = new Map(false);     // background tilemap
+    bgMap.generate(0, 0, bgTilemap, brickbg);
+
+    mainMap = new Map(true);  // change to map = new Map(true) for raycasting
+    mainMap.generate(0, 0, mainTilemap, concreteImg, grassBrickImg, redBrickImg);
+
+
     player = new Player(1200, 100);
 
     ui = new UI(player);    // pass in player object into ui class
@@ -65,12 +81,14 @@ function setup() {
 function draw() {
     background(0);
 
+    bgMap.draw();
+
+    player.sprite.collide(mainMap.allBlocks);
+    drawSprite(player.sprite);
     player.control();
-    player.sprite.collide(map.blocks);
-    drawSprites();
+
+    mainMap.draw();
+
     // draws ui box
-    ui.draw(20, 20);
-
-
-
+    ui.draw(50, 50);
 }
