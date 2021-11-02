@@ -1,30 +1,30 @@
+// tilemaps
 let bgMap;
-let brickbg;
-
-let concreteMap;
 let mainTilemap;
+
+// map assets
+let brickbg;
+let concreteMap;
 let concreteImg;
 let brickImg;
 let doorImg;
 
+// player
 let player;
 let playerIdle;
 let playerWalk;
-
-let pistol;
-
 let idleAnim;
 let walkAnim;
 
-// ui stuff -------
+// weapons
+let pistol;
+
+// ui
 let ui;
 let hpBarBg;
 let hpBarGreen;
 let hpBarYellow;
 let hpBarRed;
-// -----------------
-
-let rayCast;
 
 
 function preload() {
@@ -33,24 +33,26 @@ function preload() {
     bgTilemap = loadImage("assets/img/map/bg_tilemap.png");
     mainTilemap = loadImage("assets/img/map/tileMap.png");
 
-    // tile images
+    // map assets
     concreteImg = loadImage("assets/img/map/grey_brick.png");
     grassBrickImg = loadImage("assets/img/map/grass_brick.png");
     doorImg = loadImage("assets/img/map/door.png");
     redBrickImg = loadImage("assets/img/map/red_brick.png");
     brickbg = loadImage("assets/img/map/brickbg.png");
 
-
+    // player animations
     playerIdle = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
     playerWalk = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
-    pistol = loadImage("assets/img/weapon/pistol.png");
     idleAnim = loadAnimation(playerIdle);
     walkAnim = loadAnimation(playerWalk);
+
+    // weapon assets
+    pistol = loadImage("assets/img/weapon/pistol.png");
 
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
 
-    // hp bar
+    // ui
     hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
     hpBarGreen = loadImage("assets/img/ui/hpBar/hpGreen.png");
     hpBarYellow = loadImage("assets/img/ui/hpBar/hpYellow.png");
@@ -61,14 +63,12 @@ function preload() {
 function setup() {
     createCanvas(800, 600);
     frameRate(60);
-    
 
     bgMap = new Map(false);     // background tilemap
     bgMap.generate(0, 0, bgTilemap, brickbg);
 
     mainMap = new Map(true);  // change to map = new Map(true) for raycasting
     mainMap.generate(0, 0, mainTilemap, concreteImg, grassBrickImg, redBrickImg);
-
 
     player = new Player(1200, 100);
 
@@ -79,13 +79,13 @@ function setup() {
 function draw() {
     background(0);
 
-    bgMap.draw();
+    bgMap.draw();   // draw background tilemap before anything else
 
-    player.sprite.collide(mainMap.allBlocks);
-    drawSprite(player.sprite);
-    player.control();
+    player.sprite.collide(mainMap.allBlocks);   // player collides with mainmap tiles
+    drawSprite(player.sprite);  // draw player sprite
+    player.control();   // allow control of player sprite
 
-    mainMap.draw();
+    mainMap.draw(); // draw mainmap after player
 
     // draws ui box
     ui.draw(50, 50);
