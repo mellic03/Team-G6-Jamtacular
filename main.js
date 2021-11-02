@@ -32,9 +32,11 @@ function preload() {
     // weapon assets
     pistol = loadImage("assets/img/weapon/pistol.png");
 
+
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
 
+    
     // ui
     hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
     hpBarGreen = loadImage("assets/img/ui/hpBar/hpGreen.png");
