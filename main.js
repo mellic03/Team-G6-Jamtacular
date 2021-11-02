@@ -124,8 +124,4 @@ function draw() {
             break;
     }
 
-    // make main menu appear after 2 seconds
-    if (frameCount == 120){
-        currentScreen = MAIN_MENU;
-    }
 }
