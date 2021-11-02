@@ -16,7 +16,14 @@ let pistol;
 let idleAnim;
 let walkAnim;
 
+// ui stuff -------
 let ui;
+let hpBarBg;
+let hpBarGreen;
+let hpBarYellow;
+let hpBarRed;
+// -----------------
+
 let rayCast;
 
 
@@ -34,6 +41,12 @@ function preload() {
 
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
+
+    // hp bar
+    hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
+    hpBarGreen = loadImage("assets/img/ui/hpBar/hpGreen.png");
+    hpBarYellow = loadImage("assets/img/ui/hpBar/hpYellow.png");
+    hpBarRed = loadImage("assets/img/ui/hpBar/hpRed.png");
 }
 
 
