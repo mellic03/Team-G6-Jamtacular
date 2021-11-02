@@ -3,7 +3,7 @@ let textTimer = 0;
 
 // very bad code!! Change soon!!
 
-function runthroughtext(x, y) {
+function dialogue(x, y) {
     
     textAlign(CENTER, CENTER);
 

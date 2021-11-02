@@ -66,7 +66,8 @@ function draw() {
     player.control();
     drawSprite(player.sprite);
 
-    runthroughtext(player.sprite.position.x, player.sprite.position.y-50);
+    // very bad and very temporary dialogue triggering
+    dialogue(player.sprite.position.x, player.sprite.position.y-50);
 
     // draws ui box
     ui.draw(50, 50);
