@@ -81,13 +81,10 @@ function setup() {
 function draw() {
     background(0);
 
-    player.control();
-    player.sprite.collide(map.blocks);
-    drawSprites();
-    // draws ui box
-    ui.draw(20, 20);
+    bgMap.draw();
 
-
+    player.sprite.collide(mainMap.allBlocks);
+    drawSprite(player.sprite);
     player.control();
 
     mainMap.draw();
