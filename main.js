@@ -90,5 +90,5 @@ function draw() {
     mainMap.draw();
 
     // draws ui box
-    ui.draw(50, 50);
+    ui.draw(15, 0);
 }
