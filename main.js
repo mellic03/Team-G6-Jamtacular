@@ -1,13 +1,3 @@
-// tilemaps
-let bgMap;
-let mainTilemap;
-
-// map assets
-let brickbg;
-let concreteMap;
-let concreteImg;
-let brickImg;
-let doorImg;
 
 // player
 let player;
@@ -29,22 +19,15 @@ let hpBarRed;
 
 function preload() {
     
-    // tilemaps
-    bgTilemap = loadImage("assets/img/map/bg_tileMap.png");
-    mainTilemap = loadImage("assets/img/map/tileMap.png");
-
-    // map assets
-    concreteImg = loadImage("assets/img/map/grey_brick.png");
-    grassBrickImg = loadImage("assets/img/map/grass_brick.png");
-    doorImg = loadImage("assets/img/map/door.png");
-    redBrickImg = loadImage("assets/img/map/red_brick.png");
-    brickbg = loadImage("assets/img/map/brickbg.png");
+    spawn_area.preload();
+    area_1.preload();
 
     // player animations
     playerIdle = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
     playerWalk = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
     idleAnim = loadAnimation(playerIdle);
     walkAnim = loadAnimation(playerWalk);
+
 
     // weapon assets
     pistol = loadImage("assets/img/weapon/pistol.png");
@@ -64,29 +47,29 @@ function setup() {
     createCanvas(800, 600);
     frameRate(60);
 
-    bgMap = new Map(false);     // background tilemap
-    bgMap.generate(0, 0, bgTilemap, brickbg);
+    spawn_area.generate();
+    area_1.generate();
 
-    mainMap = new Map(true);  // change to map = new Map(true) for raycasting
-    mainMap.generate(0, 0, mainTilemap, concreteImg, grassBrickImg, redBrickImg);
 
-    player = new Player(1200, 100);
+    player = new Player(300, -200);
 
     ui = new UI(player);    // pass in player object into ui class
 }
  
 
 function draw() {
-    background(0);
+    background(50, 20, 20);
+    
+    spawn_area.draw();
+    area_1.draw();
 
-    bgMap.draw();   // draw background tilemap before anything else
+    player.control();
+    drawSprite(player.sprite);
 
-    player.sprite.collide(mainMap.allBlocks);   // player collides with mainmap tiles
-    drawSprite(player.sprite);  // draw player sprite
-    player.control();   // allow control of player sprite
-
-    mainMap.draw(); // draw mainmap after player
+    runthroughtext(player.sprite.position.x, player.sprite.position.y-50);
 
     // draws ui box
     ui.draw(50, 50);
 }
+
+
