@@ -20,14 +20,36 @@ let walkAnim;
 
 // ui stuff -------
 let ui;
+
+// hp bar
 let hpBarBg;
 let hpBarGreen;
 let hpBarYellow;
 let hpBarRed;
+
+// game states
+const LOADING = 0;
+const MAIN_MENU = 1;
+const MAIN_GAME = 2;
+const LEADERBOARD = 3;
+let currentScreen = LOADING;
 // -----------------
 
 let rayCast;
 
+
+
+// for switching screens, some things in draw chucked in here
+function drawMainGrame(){
+    background(0);
+
+    player.sprite.collide(mainMap.allBlocks);
+    drawSprite(player.sprite);
+    player.control();
+
+    // draws ui box
+    ui.draw(15, 0);
+}
 
 function preload() {
     
@@ -57,6 +79,9 @@ function preload() {
     hpBarGreen = loadImage("assets/img/ui/hpBar/hpGreen.png");
     hpBarYellow = loadImage("assets/img/ui/hpBar/hpYellow.png");
     hpBarRed = loadImage("assets/img/ui/hpBar/hpRed.png");
+
+    //buttons
+    startButton = createButton("Start Game");
 }
 
 
@@ -79,16 +104,28 @@ function setup() {
  
 
 function draw() {
-    background(0);
 
     bgMap.draw();
-
-    player.sprite.collide(mainMap.allBlocks);
-    drawSprite(player.sprite);
-    player.control();
-
     mainMap.draw();
 
-    // draws ui box
-    ui.draw(50, 50);
+    switch (currentScreen){
+        case LOADING:
+            // passes in start button to hide in ui class
+            ui.loading(startButton);
+            break;
+        case MAIN_MENU:
+            ui.mainMenu(startButton);
+            break;
+        case MAIN_GAME:
+            drawMainGame();
+            break;
+        case DEATH_SCREEN:
+            ui.deathscreen();
+            break;
+    }
+
+    // make main menu appear after 2 seconds
+    if (frameCount == 120){
+        currentScreen = MAIN_MENU;
+    }
 }
