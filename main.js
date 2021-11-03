@@ -1,10 +1,10 @@
 
 // player
 let player;
-let playerIdle;
-let playerWalk;
-let idleAnim;
-let walkAnim;
+
+let playerIdleSpritesheet;
+let playerWalkSpritesheet;
+
 
 // weapons
 let pistol;
@@ -19,23 +19,20 @@ let hpBarRed;
 
 function preload() {
     
-    spawn_area.preload();
-    area_1.preload();
+    for (let map of allMaps) {
+        map.preload();
+    }
+
 
     // player animations
-    playerIdle = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
-    playerWalk = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
-    idleAnim = loadAnimation(playerIdle);
-    walkAnim = loadAnimation(playerWalk);
-
+    playerIdleSpritesheet = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
+    playerWalkSpritesheet = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
 
     // weapon assets
     pistol = loadImage("assets/img/weapon/pistol.png");
 
-
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
-
     
     // ui
     hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
@@ -49,26 +46,28 @@ function setup() {
     createCanvas(800, 600);
     frameRate(60);
 
-    spawn_area.generate();
-    area_1.generate();
+    map1.generate();
 
-    player = new Player(300, -200);
+    player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
     ui = new UI(player);    // pass in player object into ui class
 }
  
 
 function draw() {
-    background(40, 20, 20);
-    
-    spawn_area.draw();
-    area_1.draw();
+    background(0);
+
+    for (let map of allMaps) {
+        map.draw();
+        map.transitions();
+    }
 
     player.control();
-    drawSprite(player.sprite);
 
-    // very bad and very temporary dialogue triggering
-    dialogue(player.sprite.position.x, player.sprite.position.y-50);
+    console.log(player.controllable);
+
+    // very bad and very temporary event triggering
+    events(player.sprite.position.x, player.sprite.position.y-50);
 
     // draws ui box
     ui.draw(50, 50);
