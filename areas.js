@@ -21,7 +21,6 @@ let spawn_area = {
         this.bg_tilemap = loadImage("assets/img/map/spawn/bg_tilemap.png");
         this.bg_wood = loadImage("assets/img/map/spawn/bg_wood.png");
         this.bg_sky = loadImage("assets/img/map/spawn/bg_sky.png");
-
     },
 
     generate: function() {
@@ -31,7 +30,6 @@ let spawn_area = {
 
         this.mapObject = new Map(true);
         this.mapObject.generate(0, -3000, this.main_tilemap, this.wood, this.stone);
-
     },
 
     draw: function() {
@@ -68,7 +66,6 @@ let area_1 = {
         this.grass_brick = loadImage("assets/img/map/area1/grass_brick.png");
         this.red_brick = loadImage("assets/img/map/area1/red_brick.png");
         this.grass = loadImage("assets/img/map/area1/grass.png");
-
     },
 
     generate: function() {

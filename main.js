@@ -52,7 +52,6 @@ function setup() {
     spawn_area.generate();
     area_1.generate();
 
-
     player = new Player(300, -200);
 
     ui = new UI(player);    // pass in player object into ui class
@@ -60,7 +59,7 @@ function setup() {
  
 
 function draw() {
-    background(50, 20, 20);
+    background(40, 20, 20);
     
     spawn_area.draw();
     area_1.draw();

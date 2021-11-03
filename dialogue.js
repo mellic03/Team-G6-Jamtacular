@@ -6,7 +6,7 @@ let textTimer = 0;
 function dialogue(x, y) {
     
     textAlign(CENTER, CENTER);
-
+    fill(255);
 
     if (textTimer < 240) {
         text("Oh boy I cant wait to get home", x, y);
@@ -23,14 +23,15 @@ function dialogue(x, y) {
             if (textTimer > 600) {
                 text("you'd think I would have noticed that before...", x, y);
             }
+            player.controllable = false;
             player.sprite.velocity.x = 0;
-            player.sprite.velocity.y = 3;
-            player.sprite.changeAnimation("idle");
+            player.sprite.mirrorX(1);
             textTimer++;
         }
     }
 
     if (textTimer >= 780) {
+        player.controllable = true;
         textTimer++;
     }
 
@@ -39,5 +40,4 @@ function dialogue(x, y) {
         text("This game doesn't feel finished...", x, y);
 
     }
-
 }
