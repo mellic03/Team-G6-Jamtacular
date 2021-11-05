@@ -3,8 +3,7 @@
 // these values are not absolute, the program just takes
 // the first image passed into it and maps it to the pixels with a value of 30
 // then the second image and 40 and so on,
-// this legend is temporary, I intend to have the tileMap class read from a JSON
-// containing information on which pixel value corresponds to which block type
+// I don't really like this system and would like to change it
 
 // main maps:
 // 30: grey bricks
@@ -21,13 +20,20 @@
 // 60: red brick background
 
 
+// all maps (currently) are objects defined here, they must each have a bgObject and mapObject tilemap
+
+
+
 let map1 = {
 
     mapObject: null,
     main_tilemap: null,
     wood: null,
     stone: null,
-    
+
+    bgObject: null,
+    bg_tilemap: null,
+
     active: false,
 
     preload() {
@@ -37,7 +43,6 @@ let map1 = {
         this.bg_wood = loadImage("assets/img/map/background/bg_wood.png");
         this.bg_sky = loadImage("assets/img/map/background/bg_sky.png");
 
-        
         this.main_tilemap = loadImage("assets/img/map/tilemaps/map_1_tilemap.png");
         this.grey_brick = loadImage("assets/img/map/foreground/grey_brick.png");
         this.grass_brick = loadImage("assets/img/map/foreground/grass_brick.png");
@@ -58,27 +63,15 @@ let map1 = {
         this.active = true;
     },
 
-    draw() {
-        if (this.active) {
-            this.bgObject.draw();
-            this.mapObject.draw();
-        }
-    },
-
-    collisions() {
-        if (this.active) {
-            player.sprite.collide(this.mapObject.allBlocks);
-        }    
-    },
-
     unload() {
         this.bgObject.allBlocks.removeSprites();
         this.mapObject.allBlocks.removeSprites();
+        
         this.active = false;
     },
 
     transitions() {
-        mapTransition(this, 2750, 1620, map2, 3250, 1620);
+        transitionMap(this, 2750, 1620, map2, 3250, 1620);
     },
 }
 
@@ -89,6 +82,9 @@ let map2 = {
     main_tilemap: null,
     wood: null,
     stone: null,
+
+    bgObject: null,
+    bg_tilemap: null,
 
     active: false,
     
@@ -111,34 +107,20 @@ let map2 = {
 
         this.mapObject = new Tilemap(true);
         this.mapObject.generate(3000, 0, this.main_tilemap, this.grey_brick, this.grass_brick, this.red_brick, this.wood, this.grass, this.stone);
+        
         this.active = true;
-
-    },
-
-    draw() {
-        if (this.active) {
-            this.bgObject.draw();
-            this.mapObject.draw();
-        }
-    },
-
-    collisions() {
-        if (this.active) {
-            player.sprite.collide(this.mapObject.allBlocks);
-        }
     },
 
     unload() {
         this.bgObject.allBlocks.removeSprites();
         this.mapObject.allBlocks.removeSprites();
+        
         this.active = false;
     },
 
-
     transitions() {
-        mapTransition(this, 3150, 1620, map1, 2650, 1620);
+        transitionMap(this, 3150, 1620, map1, 2650, 1620);
     },
-
 }
 
 
