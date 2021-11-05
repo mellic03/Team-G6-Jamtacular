@@ -37,5 +37,4 @@ function events(x, y) {
     if (textTimer >= 780) {
         player.controllable = true;
     }
-
 }
