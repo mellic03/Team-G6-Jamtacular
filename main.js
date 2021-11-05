@@ -52,7 +52,7 @@ function setup() {
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    stanky = new Stanky(800, 400, player);    // create new boss stanky with target as player
+    stanky = new Stanky(1800, 2000, player);    // create new boss stanky with target as player
 
     ui = new UI(player.sprite);    // pass in player object into ui class
 }
