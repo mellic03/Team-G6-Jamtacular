@@ -1,0 +1,58 @@
+{
+    "foreground": {
+
+        "grey_brick": {
+            "pixel value": 30,
+            "file path": "assets/img/map/foreground/grey_brick.png"
+        },
+
+        "grass_brick": {
+            "pixel value": 40,
+            "file path": "assets/img/map/foreground/grass_brick.png"
+        },
+                
+        "red_brick": {
+            "pixel value": 50,
+            "file path": "assets/img/map/foreground/red_brick.png"
+        },
+
+        "wood": {
+            "pixel value": 60,
+            "file path": "assets/img/map/foreground/wood.png"
+        },
+
+        "grass": {
+            "pixel value": 70,
+            "file path": "assets/img/map/foreground/grass.png"
+        },
+
+        "stone": {
+            "pixel value": 80,
+            "file path": "assets/img/map/foreground/stone.png"
+        }
+    },
+
+
+    "background": {
+
+        "bg_sky": {
+            "pixel value": 30,
+            "file path": "assets/img/map/background/bg_sky.png"
+        },
+
+        "bg_wood": {
+            "pixel value": 40,
+            "file path": "assets/img/map/background/bg_wood.png"
+        },
+
+        "bg_grey_brick": {
+            "pixel value": 50,
+            "file path": "assets/img/map/background/bg_grey_brick.png"
+        },
+
+        "bg_red_wood": {
+            "pixel value": 60,
+            "file path": "assets/img/map/background/bg_red_brick.png"
+        }
+    }
+}

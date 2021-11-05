@@ -30,18 +30,12 @@ function events(x, y) {
             }
 
 
-
             textTimer++;
         }
     }
 
     if (textTimer >= 780) {
         player.controllable = true;
-
-        if (player.sprite.position.y > 800) {
-            player.GRAPPLE = true;
-        }
-        textTimer++;
     }
 
 }

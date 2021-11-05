@@ -6,9 +6,6 @@ let playerIdleSpritesheet;
 let playerWalkSpritesheet;
 
 
-// weapons
-let pistol;
-
 // ui
 let ui;
 let hpBarBg;
@@ -22,7 +19,6 @@ function preload() {
     for (let map of allMaps) {
         map.preload();
     }
-
 
     // player animations
     playerIdleSpritesheet = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
@@ -48,29 +44,39 @@ function setup() {
 
     map1.generate();
 
-    player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
+    player = new Player(2500, 1600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    ui = new UI(player);    // pass in player object into ui class
+    ui = new UI(player.sprite);    // pass in player object into ui class
+
+    stanky = new Stanky(800, 500, player);
 }
  
 
 function draw() {
     background(0);
 
+    // all maps are ready to be drawn and transitioned to
     for (let map of allMaps) {
-        map.draw();
-        map.transitions();
+        
+        if (!keyIsDown(16)) {   // if the player isn't holding shift for the raycast mechanic
+            map.draw();
+            map.transitions();
+        }
+        
+        map.collisions();   // always detect collisions
     }
+
 
     player.control();
 
-    console.log(player.controllable);
 
+    stanky.draw();
+
+    
     // very bad and very temporary event triggering
     events(player.sprite.position.x, player.sprite.position.y-50);
 
     // draws ui box
-    ui.draw(50, 50);
+    ui.draw(50, 50, player);
+
 }
-
-
