@@ -6,6 +6,9 @@ let playerIdleSpritesheet;
 let playerWalkSpritesheet;
 
 
+let stanky;
+
+
 // ui
 let ui;
 let hpBarBg;
@@ -49,6 +52,8 @@ function setup() {
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
+    stanky = new Stanky(800, 400, player);    // create new boss stanky with target as player
+
     ui = new UI(player.sprite);    // pass in player object into ui class
 }
  
@@ -57,12 +62,17 @@ function draw() {
     background(0);
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
-
-    player.control();
     
+    stanky.draw();  // I don't know why I called it stanky
+
+    player.draw();
+    
+
     // very bad and very temporary event triggering
     events(player.sprite.position.x, player.sprite.position.y-50);
 
     // draws ui box
     ui.draw(50, 50, player);
+
+    text("press 2 for grapple, 3 for ranged weapon and SHIFT for raycasting", 500, 500)
 }

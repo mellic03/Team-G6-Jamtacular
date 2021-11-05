@@ -7,17 +7,19 @@ function mapHandler() {
 
     for (let map of allMaps) {  // for each map
 
-        // if shift is down (activating raycast mechanic), stop drawing map but continue detecting collisions
-        if (map.active && (keyIsDown(16))) {
-            player.sprite.collide(map.mapObject.allBlocks);
-        }
-
-        // else if shift is not down, draw the map normally 
-        else if (map.active && !(keyIsDown(16))) {
-            map.bgObject.draw();
-            map.mapObject.draw();
+        if (map.active) {   // draw map if map is active
+            
             player.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
             player.sprite.collide(map.mapObject.allBlocks);
+    
+            stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
+            stanky.sprite.collide(map.mapObject.allBlocks);
+       
+
+            if (!keyIsDown(16)) {   // if shift is down, dont draw maps
+                map.bgObject.draw();
+                map.mapObject.draw();
+            }
         }
 
         // run transitions
