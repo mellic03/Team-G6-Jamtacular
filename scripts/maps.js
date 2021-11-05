@@ -1,6 +1,10 @@
 
-
 // map legend, starts at pixel value = 30
+// these values are not absolute, the program just takes
+// the first image passed into it and maps it to the pixels with a value of 30
+// then the second image and 40 and so on,
+// this legend is temporary, I intend to have the tileMap class read from a JSON
+// containing information on which pixel value corresponds to which block type
 
 // main maps:
 // 30: grey bricks
@@ -26,12 +30,10 @@ let map1 = {
     
     active: false,
 
-    transitionBuffer: 0,
-
     preload() {
 
         this.bg_tilemap = loadImage("assets/img/map/tilemaps/bg_tilemap.png");
-        this.bg_brick = loadImage("assets/img/map/background/bg_brick.png");
+        this.bg_brick = loadImage("assets/img/map/background/bg_grey_brick.png");
         this.bg_wood = loadImage("assets/img/map/background/bg_wood.png");
         this.bg_sky = loadImage("assets/img/map/background/bg_sky.png");
 
@@ -60,9 +62,13 @@ let map1 = {
         if (this.active) {
             this.bgObject.draw();
             this.mapObject.draw();
-            player.sprite.collide(this.mapObject.allBlocks);
         }
+    },
 
+    collisions() {
+        if (this.active) {
+            player.sprite.collide(this.mapObject.allBlocks);
+        }    
     },
 
     unload() {
@@ -73,7 +79,6 @@ let map1 = {
 
     transitions() {
         mapTransition(this, 2750, 1620, map2, 3250, 1620);
-        this.transitionBuffer++;
     },
 }
 
@@ -87,12 +92,10 @@ let map2 = {
 
     active: false,
     
-    transitionBuffer: 0,
-
     preload() {
 
         this.bg_tilemap = loadImage("assets/img/map/tilemaps/map_2_bg_tilemap.png");
-        this.bg_brick = loadImage("assets/img/map/background/bg_brick.png");
+        this.bg_brick = loadImage("assets/img/map/background/bg_grey_brick.png");
         this.bg_wood = loadImage("assets/img/map/background/bg_wood.png");
         this.bg_red_brick = loadImage("assets/img/map/background/bg_red_brick.png");
         
@@ -109,12 +112,18 @@ let map2 = {
         this.mapObject = new Tilemap(true);
         this.mapObject.generate(3000, 0, this.main_tilemap, this.grey_brick, this.grass_brick, this.red_brick, this.wood, this.grass, this.stone);
         this.active = true;
+
     },
 
     draw() {
         if (this.active) {
             this.bgObject.draw();
             this.mapObject.draw();
+        }
+    },
+
+    collisions() {
+        if (this.active) {
             player.sprite.collide(this.mapObject.allBlocks);
         }
     },
@@ -128,41 +137,9 @@ let map2 = {
 
     transitions() {
         mapTransition(this, 3150, 1620, map1, 2650, 1620);
-        this.transitionBuffer++;
     },
 
 }
 
 
-let allMaps = [map1, map2];
 
-
-function mapTransition(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
-    
-    rect(xFrom-50, yFrom-75, 100, 100);
-    stroke(0);
-    textSize(20)
-    text("MAP", xFrom-50, yFrom-50);
-    text("TRANSITION", xFrom-50, yFrom-25);
-
-
-
-    if (dist(player.sprite.position.x, player.sprite.position.y, xFrom, yFrom) < 100) {
-
-        frameCount = 0;
-        player.controllable = false;
-
-        mapTo.generate();
-
-        player.sprite.position.x = xTo;
-        player.sprite.position.y = yTo;
-
-        mapFrom.unload();
-
-        mapFrom.transitioning = false;
-    }
-
-    if (frameCount > 0) {
-        player.controllable = true;
-    }
-}
