@@ -50,7 +50,6 @@ function setup() {
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
     ui = new UI(player.sprite);    // pass in player object into ui class
-
 }
  
 
