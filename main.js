@@ -74,5 +74,5 @@ function draw() {
     // draws ui box
     ui.draw(50, 50, player);
 
-    text("press 2 for grapple, 3 for ranged weapon and SHIFT for raycasting", 500, 500)
+    text("press 2 for grapple, 3 for ranged weapon and SHIFT for raycasting", 300, 500)
 }
