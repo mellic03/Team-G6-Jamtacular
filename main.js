@@ -52,7 +52,7 @@ function setup() {
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    stanky = new Stanky(1800, 2000, player);    // create new boss stanky with target as player
+    stanky = new Stanky(3300, 500, player);    // create new boss stanky with target as player
 
     ui = new UI(player.sprite);    // pass in player object into ui class
 }
@@ -63,16 +63,29 @@ function draw() {
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
     
-    stanky.draw();  // I don't know why I called it stanky
 
+    if (stankyHidden == false) {
+        stanky.draw();
+    }
+    else if (stankyHidden == true) {
+        ellipse(stanky.sprite.position.x, stanky.sprite.position.y, 50);
+    }
+
+    //stanky.draw();
+    player.projectiles.overlap(stanky.sprite, projectileDamage);
     player.draw();
     
-
     // very bad and very temporary event triggering
     events(player.sprite.position.x, player.sprite.position.y-50);
 
     // draws ui box
     ui.draw(50, 50, player);
 
-    text("press 2 for grapple, 3 for ranged weapon and SHIFT for raycasting", 300, 500)
+}
+
+
+function projectileDamage(projectile) {
+
+    projectile.remove();
+    stanky.health -= 5;
 }

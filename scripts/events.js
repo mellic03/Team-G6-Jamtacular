@@ -1,5 +1,5 @@
 let textTimer = 0;
-
+let stankyHidden = true;
 
 // very bad code!! Change soon!!
 
@@ -37,4 +37,11 @@ function events(x, y) {
     if (textTimer >= 780) {
         player.controllable = true;
     }
+
+    if (player.sprite.position.dist(stanky.sprite.position) < 250) {
+        stankyHidden = false;
+    }
 }
+
+
+
