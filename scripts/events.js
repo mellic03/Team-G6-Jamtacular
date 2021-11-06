@@ -3,6 +3,8 @@ let stankyHidden = true;
 
 // very bad code!! Change soon!!
 
+// create a trigger class and fill this file with triggers
+
 function events(x, y) {
     
     textAlign(CENTER, CENTER);
@@ -36,10 +38,6 @@ function events(x, y) {
 
     if (textTimer >= 780) {
         player.controllable = true;
-    }
-
-    if (player.sprite.position.dist(stanky.sprite.position) < 250) {
-        stankyHidden = false;
     }
 }
 

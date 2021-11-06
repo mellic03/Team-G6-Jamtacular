@@ -63,15 +63,7 @@ function draw() {
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
     
-
-    if (stankyHidden == false) {
-        stanky.draw();
-    }
-    else if (stankyHidden == true) {
-        ellipse(stanky.sprite.position.x, stanky.sprite.position.y, 50);
-    }
-
-    //stanky.draw();
+    stanky.draw();
     player.projectiles.overlap(stanky.sprite, projectileDamage);
     player.draw();
     
@@ -84,8 +76,8 @@ function draw() {
 }
 
 
-function projectileDamage(projectile) {
+function projectileDamage(projectile, injured) {
 
     projectile.remove();
-    stanky.health -= 5;
+    injured.health -= 5;
 }
