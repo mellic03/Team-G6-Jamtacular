@@ -79,5 +79,5 @@ function draw() {
 function projectileDamage(projectile, injured) {
 
     projectile.remove();
-    injured.health -= 5;
+    stanky.health -= 5;
 }
