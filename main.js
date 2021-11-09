@@ -15,6 +15,7 @@ let grapple_open;
 
 // enemy
 let stanky;
+var monsters = [];
 
 
 // ui
@@ -66,6 +67,12 @@ function setup() {
     stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
 
     ui = new UI(player.sprite);    // pass in player object into ui class
+
+    for (var i = 0; i < 10; i++) {
+        monsters [i] = new Monster (random (10, 390), random (10, 390), random (0, 7), 20);
+    }
+
+
 }
  
 
@@ -79,4 +86,8 @@ function draw() {
     events();
     // draws ui box
     ui.draw(50, 50, player);
+
+    for (var i = 0; i < monsters.length; i++) {
+        monsters [i].update();
+    }
 }
