@@ -124,4 +124,49 @@ let map2 = {
 }
 
 
+let map3 = {
 
+    mapObject: null,
+    main_tilemap: null,
+    wood: null,
+    stone: null,
+
+    bgObject: null,
+    bg_tilemap: null,
+
+    active: false,
+    
+    preload() {
+
+        this.bg_tilemap = loadImage("assets/img/map/tilemaps/map_2_bg_tilemap.png");
+        this.bg_brick = loadImage("assets/img/map/background/bg_grey_brick.png");
+        this.bg_wood = loadImage("assets/img/map/background/bg_wood.png");
+        this.bg_red_brick = loadImage("assets/img/map/background/bg_red_brick.png");
+        
+        this.main_tilemap = loadImage("assets/img/map/tilemaps/map_3_tilemap.png");
+        this.grey_brick = loadImage("assets/img/map/foreground/grey_brick.png");
+        this.red_brick = loadImage("assets/img/map/foreground/red_brick.png");
+    },
+
+    generate() {
+        
+        this.bgObject = new Tilemap(false);
+        this.bgObject.generate(0, 3000, this.bg_tilemap, this.bg_red_brick);
+
+        this.mapObject = new Tilemap(true);
+        this.mapObject.generate(0, 3000, this.main_tilemap, this.grey_brick);
+        
+        this.active = true;
+    },
+
+    unload() {
+        this.bgObject.allBlocks.removeSprites();
+        this.mapObject.allBlocks.removeSprites();
+        
+        this.active = false;
+    },
+
+    transitions() {
+        transitionMap(this, 3150, 1620, map1, 2650, 1620);
+    },
+}

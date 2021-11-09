@@ -1,5 +1,5 @@
 
-let allMaps = [map1, map2]; // array containing all maps
+let allMaps = [map1, map2, map3]; // array containing all maps
 let transitionBuffer = 0;   // buffer which is used to disable all raycasting while transitioning between maps
 
 
@@ -17,11 +17,11 @@ function mapHandler() {
             stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
             stanky.sprite.collide(map.mapObject.allBlocks);
        
-
-            if (!keyIsDown(16)) {   // if shift is down, dont draw maps
+            if (map != map2) {
                 map.bgObject.draw();
                 map.mapObject.draw();
             }
+            
         }
 
         // run transitions

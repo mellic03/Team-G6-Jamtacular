@@ -4,8 +4,16 @@ let player;
 
 let playerIdleSpritesheet;
 let playerWalkSpritesheet;
+let playerMeleeSpritesheet;
 
 
+// weapons
+let pistol_img;
+let pistol_anim;
+let grapple_closed;
+let grapple_open;
+
+// enemy
 let stanky;
 
 
@@ -28,10 +36,12 @@ function preload() {
     playerWalkSpritesheet = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
     playerMeleeSpritesheet = loadSpriteSheet("assets/img/player/playerMelee.png", 64, 64, 10);
 
+
     // weapon assets
     pistol_img = loadImage("assets/img/weapon/pistol_1.png");
     pistol_anim = loadAnimation("assets/img/weapon/pistol_1.png", "assets/img/weapon/pistol_2.png","assets/img/weapon/pistol_3.png");
-
+    grapple_closed = loadImage("assets/img/weapon/grapple_closed.png");
+    grapple_open = loadImage("assets/img/weapon/grapple_open.png");
 
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
@@ -53,7 +63,7 @@ function setup() {
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    stanky = new Stanky(3300, 500, player);    // create new boss stanky with target as player, this is for testing
+    stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
 
     ui = new UI(player.sprite);    // pass in player object into ui class
 }
@@ -64,15 +74,9 @@ function draw() {
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
     
-    stanky.draw(); // this is for testing
+    stanky.draw();  // this is for testing
     player.draw();
-    
-    console.log()
-
-    // very bad and very temporary event triggering
-    events(player.sprite.position.x, player.sprite.position.y-50);
-
+    events();
     // draws ui box
     ui.draw(50, 50, player);
-
 }
