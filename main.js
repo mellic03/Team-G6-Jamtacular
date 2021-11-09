@@ -66,7 +66,7 @@ function setup() {
 
     stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
 
-    ui = new UI(player.sprite);    // pass in player object into ui class
+    ui = new UI(player);    // pass in player object into ui class
 
     for (var i = 0; i < 10; i++) {
         monsters [i] = new Monster (random (10, 390), random (10, 390), random (0, 7), 20);
