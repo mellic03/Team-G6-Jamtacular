@@ -1,9 +1,5 @@
 
 
-
-
-
-
 function events(x, y) {
     
     textAlign(CENTER, CENTER);
@@ -11,7 +7,6 @@ function events(x, y) {
 
 
     trigger(player, 2400, 4700, giveGrapple, true);
-
 }
 
 

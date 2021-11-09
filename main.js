@@ -71,8 +71,6 @@ function setup() {
     for (var i = 0; i < 10; i++) {
         monsters [i] = new Monster (random (10, 390), random (10, 390), random (0, 7), 20);
     }
-
-
 }
 
 
@@ -83,7 +81,9 @@ function draw() {
     
     stanky.draw();  // this is for testing
     player.draw();
+
     events();
+
     // draws ui box
     ui.draw(50, 50, player);
 
