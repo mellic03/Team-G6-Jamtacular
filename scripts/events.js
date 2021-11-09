@@ -3,42 +3,30 @@ let stankyHidden = true;
 
 // very bad code!! Change soon!!
 
-// create a trigger class and fill this file with triggers
+// create a trigger function and fill this file with triggers
+
+
+function trigger(triggerEntity, xpos, ypos, triggerDist, triggerFunction) {
+
+    let triggerPos = createVector(xpos, ypos);
+
+    if (triggerEntity.sprite.position.dist(triggerPos) < triggerDist) {
+
+        triggerFunction();
+        
+    }
+
+
+}
+
+
 
 function events(x, y) {
     
     textAlign(CENTER, CENTER);
     fill(255);
 
-    if (textTimer < 240) {
-        text("Oh boy I cant wait to get home", x, y);
-        textTimer++;
-    }
 
-
-    if (dist(x, y, 1450, 720) < 150) {
-
-        if (textTimer < 780) {
-
-            player.controllable = false;
-            player.sprite.velocity.x = 0;
-            player.sprite.mirrorX(1);
-            
-            if (textTimer > 360 && textTimer < 480) {
-                text("Huh,", x, y);
-            }
-            if (textTimer > 600) {
-                text("you'd think I would have noticed that before...", x, y);
-            }
-
-
-            textTimer++;
-        }
-    }
-
-    if (textTimer >= 780) {
-        player.controllable = true;
-    }
 }
 
 

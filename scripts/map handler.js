@@ -9,9 +9,11 @@ function mapHandler() {
 
         if (map.active) {   // draw map if map is active
             
+            // remove player projectiles
             player.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
             player.sprite.collide(map.mapObject.allBlocks);
     
+            // remove stanky projectiles
             stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
             stanky.sprite.collide(map.mapObject.allBlocks);
        
