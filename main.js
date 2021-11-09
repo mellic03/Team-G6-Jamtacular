@@ -15,14 +15,15 @@ let grapple_open;
 
 // enemy
 let stanky;
+var monsters = [];
 
 
 // ui
 let ui;
-//let hpBarBg;
-//let hpBarGreen;
-//let hpBarYellow;
-//let hpBarRed;
+let hpBarBg;
+let hpBarGreen;
+let hpBarYellow;
+let hpBarRed;
 
 function preload() {
     
@@ -48,26 +49,32 @@ function preload() {
     
 
     // ui
-    //hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
-    //hpBarGreen = loadImage("assets/img/ui/hpBar/hpGreen.png");
-    //hpBarYellow = loadImage("assets/img/ui/hpBar/hpYellow.png");
-    //hpBarRed = loadImage("assets/img/ui/hpBar/hpRed.png");
+    hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
+    hpBarGreen = loadImage("assets/img/ui/hpBar/hpGreen.png");
+    hpBarYellow = loadImage("assets/img/ui/hpBar/hpYellow.png");
+    hpBarRed = loadImage("assets/img/ui/hpBar/hpRed.png");
 }
 
 
 function setup() {
     createCanvas(800, 600);
-    pg = createGraphics(800, 400);
-    pg.background(255);
+    frameRate(60);
+
     map1.generate();    // generate only the first map
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
     stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
-    
-    ui = new UI(player);    // pass in player object into ui class
+
+    ui = new UI(player.sprite);    // pass in player object into ui class
+
+    for (var i = 0; i < 10; i++) {
+        monsters [i] = new Monster (random (10, 390), random (10, 390), random (0, 7), 20);
+    }
+
+
 }
- 
+
 
 function draw() {
     background(0);
@@ -76,9 +83,11 @@ function draw() {
     
     stanky.draw();  // this is for testing
     player.draw();
+    events();
+    // draws ui box
+    ui.draw(50, 50, player);
 
-    events(); // handles event triggers
-
-    // draw ui
-    ui.draw();
+    for (var i = 0; i < monsters.length; i++) {
+        monsters [i].update();
+    }
 }
