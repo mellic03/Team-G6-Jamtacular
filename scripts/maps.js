@@ -63,15 +63,8 @@ let map1 = {
         this.active = true;
     },
 
-    unload() {
-        this.bgObject.allBlocks.removeSprites();
-        this.mapObject.allBlocks.removeSprites();
-        
-        this.active = false;
-    },
-
     transitions() {
-        transitionMap(this, 2750, 1620, map2, 3250, 1620);
+        transitionMap(this, 100, 1800, map3, 100, 3100);
     },
 }
 
@@ -111,15 +104,8 @@ let map2 = {
         this.active = true;
     },
 
-    unload() {
-        this.bgObject.allBlocks.removeSprites();
-        this.mapObject.allBlocks.removeSprites();
-        
-        this.active = false;
-    },
-
     transitions() {
-        transitionMap(this, 3150, 1620, map1, 2650, 1620);
+        transitionMap(this, 3150, 1620, map3, 2600, 4500);
     },
 }
 
@@ -139,8 +125,6 @@ let map3 = {
     preload() {
 
         this.bg_tilemap = loadImage("assets/img/map/tilemaps/map_2_bg_tilemap.png");
-        this.bg_brick = loadImage("assets/img/map/background/bg_grey_brick.png");
-        this.bg_wood = loadImage("assets/img/map/background/bg_wood.png");
         this.bg_red_brick = loadImage("assets/img/map/background/bg_red_brick.png");
         
         this.main_tilemap = loadImage("assets/img/map/tilemaps/map_3_tilemap.png");
@@ -159,14 +143,14 @@ let map3 = {
         this.active = true;
     },
 
-    unload() {
-        this.bgObject.allBlocks.removeSprites();
-        this.mapObject.allBlocks.removeSprites();
-        
-        this.active = false;
-    },
-
     transitions() {
         transitionMap(this, 3150, 1620, map1, 2650, 1620);
+        transitionMap(this, 2800, 4500, map2, 3250, 1620);
     },
 }
+
+
+
+
+let allMaps = [map1, map2, map3]; // array containing all maps
+let transitionBuffer = 0;   // buffer which is used to disable all raycasting while transitioning between maps
