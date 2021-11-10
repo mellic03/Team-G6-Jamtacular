@@ -59,11 +59,11 @@ function setup() {
     createCanvas(800, 600);
     frameRate(60);
 
-    map1.generate();    // generate only the first map
+    map3.generate();    // generate only the first map
 
-    player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
+    player = new Player(1000, 4500, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    stanky = new Stanky(500, 500, player);    // create new boss stanky with target as player, this is for testing
+    stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
 
     ui = new UI(player);    // pass in player object into ui class
 

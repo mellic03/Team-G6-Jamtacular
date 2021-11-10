@@ -68,19 +68,11 @@ let mapAssets = {
 
         this.map_3_bg_tilemap = loadImage("assets/img/map/tilemaps/map_3_bg_tilemap.png");
         this.map_3_fg_tilemap = loadImage("assets/img/map/tilemaps/map_3_fg_tilemap.png");
-        
-        
     }
 }
 
 
 let map1 = {
-
-    mapObject: null,
-    main_tilemap: null,
-
-    bgObject: null,
-    bg_tilemap: null,
 
     active: false,
 
@@ -106,14 +98,6 @@ let map1 = {
 
 let map2 = {
 
-    mapObject: null,
-    main_tilemap: null,
-    wood: null,
-    stone: null,
-
-    bgObject: null,
-    bg_tilemap: null,
-
     active: false,
 
     generate() {
@@ -137,14 +121,6 @@ let map2 = {
 
 
 let map3 = {
-
-    mapObject: null,
-    main_tilemap: null,
-    wood: null,
-    stone: null,
-
-    bgObject: null,
-    bg_tilemap: null,
 
     active: false,
     
@@ -199,9 +175,12 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
         player.sprite.position.y = yTo;
 
         unloadMap(mapFrom)   // delete the sprites from the old map
+        
+        boundaries.splice(1, 1164);
     }
 
-    if (transitionBuffer > 5) {
+    // 5 < buffer < 10 so the program isnt forcing controllable = true constantly
+    if (transitionBuffer > 5 && transitionBuffer < 10) {
         player.controllable = true;
     }
 
