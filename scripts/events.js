@@ -1,5 +1,5 @@
 
-
+// main function, everything goes in here
 function events(x, y) {
     
     textAlign(CENTER, CENTER);
@@ -11,6 +11,9 @@ function events(x, y) {
 
 
 
+
+// other functions for tidiness
+
 function giveGrapple(entity) {
     entity.CAN_GRAPPLE = true;
 }
@@ -18,6 +21,7 @@ function giveGrapple(entity) {
 function giveRanged(entity) {
     entity.CAN_RANGED = true;
 }
+
 
 // trigger, runs callback once player is within 100 pixels
 function trigger(triggerEntity, xpos, ypos, callback, debug) {
@@ -36,6 +40,7 @@ function trigger(triggerEntity, xpos, ypos, callback, debug) {
 }
 
 
+// handles player collisions and map drawing
 function mapHandler() {
 
     for (let map of allMaps) {  // for each map
@@ -65,44 +70,6 @@ function mapHandler() {
     }
 }
 
-
-
-
-
-// transition between maps, use in maps.js
-function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
-
-    // in-game map transition marker
-    rect(xFrom-50, yFrom-75, 100, 100);
-    stroke(0);
-    textAlign(LEFT, CENTER);
-    textSize(20)
-    text("MAP", xFrom-50, yFrom-50);
-    text("TRANSITION", xFrom-50, yFrom-25);
-
-
-    // if the player reaches the transition point
-    if (dist(player.sprite.position.x, player.sprite.position.y, xFrom, yFrom) < 100) {
-        
-        transitionBuffer = 0;   // reset transition buffer
-
-        mapTo.generate();   //generate the new map
-        
-        player.controllable = false;    // disables raycasting, as there is a short period of time where there are no boundaries between map transitions
-
-        // move the player to the new map at the specified location
-        player.sprite.position.x = xTo;
-        player.sprite.position.y = yTo;
-
-        unloadMap(mapFrom)   // delete the sprites from the old map
-    }
-
-    if (transitionBuffer > 5) {
-        player.controllable = true;
-    }
-
-    transitionBuffer++;
-}
 
 
 // deletes all sprites of a map

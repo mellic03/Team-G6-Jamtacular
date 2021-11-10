@@ -27,11 +27,9 @@ let hpBarRed;
 
 function preload() {
     
-    for (let map of allMaps) {
-        map.preload();
-    }
+    mapAssets.preload();
 
-
+    
     // player animations
     playerIdleSpritesheet = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
     playerWalkSpritesheet = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
