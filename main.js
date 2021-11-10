@@ -44,6 +44,9 @@ function preload() {
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
     
+    
+    // enemy
+    batImg = loadSpriteSheet("assets/img/enemy/balls/Bat_spritesheet.png", 64, 64, 8);
 
     // ui
     hpBarBg = loadImage("assets/img/ui/hpBar/hpBg.png");
