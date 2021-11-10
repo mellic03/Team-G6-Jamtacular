@@ -44,6 +44,7 @@ function preload() {
     grapple_closed = loadImage("assets/img/weapon/grapple_closed.png");
     grapple_open = loadImage("assets/img/weapon/grapple_open.png");
 
+
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
     
@@ -64,7 +65,7 @@ function setup() {
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
+    stanky = new Stanky(500, 500, player);    // create new boss stanky with target as player, this is for testing
 
     ui = new UI(player);    // pass in player object into ui class
 
