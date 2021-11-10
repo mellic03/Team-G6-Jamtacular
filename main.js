@@ -15,8 +15,7 @@ let grapple_open;
 
 // enemy
 let stanky;
-var monsters = [];
-
+let enemy;
 
 // ui
 let ui;
@@ -29,7 +28,6 @@ function preload() {
     
     mapAssets.preload();
 
-    
     // player animations
     playerIdleSpritesheet = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
     playerWalkSpritesheet = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
@@ -55,21 +53,22 @@ function preload() {
 }
 
 
+let notE;
+
 function setup() {
     createCanvas(800, 600);
     frameRate(60);
 
-    map3.generate();    // generate only the first map
+    map4.generate();    // generate only the first map
 
-    player = new Player(1000, 4500, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
+    player = new Player(1800, 10673, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
-    stanky = new Stanky(1450, 4550, player);    // create new boss stanky with target as player, this is for testing
+    stanky = new Stanky(1450, 7550, player);    // create new boss stanky with target as player, this is for testing
 
     ui = new UI(player);    // pass in player object into ui class
 
-    for (var i = 0; i < 10; i++) {
-        monsters [i] = new Monster (random (10, 390), random (10, 390), random (0, 7), 20);
-    }
+    enemy = new Enemy(2400, 10650, 900, 200, true);
+    notE = new notEnemy(1600, 10700);
 }
 
 
@@ -86,7 +85,7 @@ function draw() {
     // draws ui box
     ui.draw(50, 50, player);
 
-    for (var i = 0; i < monsters.length; i++) {
-        monsters [i].update();
-    }
+    enemy.update();
+
+    notE.logic(player);
 }

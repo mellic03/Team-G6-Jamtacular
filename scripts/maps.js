@@ -42,6 +42,9 @@ let mapAssets = {
     map_2_fg_tilemap: null,
     map_3_bg_tilemap: null,
     map_3_fg_tilemap: null,
+    map_4_bg_tilemap: null,
+    map_4_fg_tilemap: null,
+
 
     preload() {
 
@@ -68,6 +71,9 @@ let mapAssets = {
 
         this.map_3_bg_tilemap = loadImage("assets/img/map/tilemaps/map_3_bg_tilemap.png");
         this.map_3_fg_tilemap = loadImage("assets/img/map/tilemaps/map_3_fg_tilemap.png");
+    
+        this.map_4_bg_tilemap = loadImage("assets/img/map/tilemaps/map_4_bg_tilemap.png");
+        this.map_4_fg_tilemap = loadImage("assets/img/map/tilemaps/map_4_fg_tilemap.png");
     }
 }
 
@@ -91,7 +97,7 @@ let map1 = {
     },
 
     transitions() {
-        transitionMap(this, 100, 1800, map3, 100, 3100);
+        transitionMap(this, 100, 1800, map3, 100, 6100);
     },
 }
 
@@ -106,18 +112,19 @@ let map2 = {
         this.main_tilemap = mapAssets.map_2_fg_tilemap;
         
         this.bgObject = new Tilemap(false);
-        this.bgObject.generate(3000, 0, this.bg_tilemap, mapAssets.bg_red_brick);
+        this.bgObject.generate(0, 3000, this.bg_tilemap, mapAssets.bg_red_brick);
 
         this.mapObject = new Tilemap(true);
-        this.mapObject.generate(3000, 0, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
+        this.mapObject.generate(0, 3000, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
         
         this.active = true;
     },
 
     transitions() {
-        transitionMap(this, 3150, 1620, map3, 2600, 4500);
+        transitionMap(this, 150, 4620, map3, 2700, 8800);
     },
 }
+
 
 
 let map3 = {
@@ -126,26 +133,55 @@ let map3 = {
     
     generate() {
         
-        this.bg_tilemap = mapAssets.map_2_bg_tilemap;
+        this.bg_tilemap = mapAssets.map_3_bg_tilemap;
         this.main_tilemap = mapAssets.map_3_fg_tilemap;
 
         this.bgObject = new Tilemap(false);
-        this.bgObject.generate(0, 3000, this.bg_tilemap, mapAssets.bg_red_brick);
+        this.bgObject.generate(0, 6000, this.bg_tilemap, mapAssets.bg_brick, mapAssets.bg_red_brick);
 
         this.mapObject = new Tilemap(true);
-        this.mapObject.generate(0, 3000, this.main_tilemap, mapAssets.grey_brick);
+        this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick);
         
         this.active = true;
     },
 
     transitions() {
-        transitionMap(this, 3150, 1620, map1, 2650, 1620);
-        transitionMap(this, 2800, 4500, map2, 3250, 1620);
+        transitionMap(this, 2800, 7500, map4, 200, 10500);
+        transitionMap(this, 2800, 8800, map2, 250, 4620); // dark map
     },
 }
 
 
-let allMaps = [map1, map2, map3]; // array containing all maps
+let map4 = {
+
+    active: false,
+    
+    generate() {
+        
+        this.bg_tilemap = mapAssets.map_4_bg_tilemap;
+        this.main_tilemap = mapAssets.map_4_fg_tilemap;
+
+        this.bgObject = new Tilemap(false);
+        this.bgObject.generate(0, 9000, this.bg_tilemap, mapAssets.bg_red_brick);
+
+        this.mapObject = new Tilemap(true);
+        this.mapObject.generate(0, 9000, this.main_tilemap, mapAssets.grey_brick);
+        
+        this.active = true;
+    },
+
+    transitions() {
+        transitionMap(this, 100, 10500, map3, 2700, 7500);
+    },
+}
+
+
+
+
+
+
+
+let allMaps = [map1, map2, map3, map4]; // array containing all maps
 let transitionBuffer = 0;   // buffer which is used to disable all raycasting while transitioning between maps
 
 
@@ -163,10 +199,11 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
 
     // if the player reaches the transition point
     if (dist(player.sprite.position.x, player.sprite.position.y, xFrom, yFrom) < 100) {
+        boundaries.length = 0;
         
-        transitionBuffer = 0;   // reset transition buffer
-
         mapTo.generate();   //generate the new map
+
+        transitionBuffer = 0;   // reset transition buffer
         
         player.controllable = false;    // disables raycasting, as there is a short period of time where there are no boundaries between map transitions
 
@@ -176,11 +213,10 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
 
         unloadMap(mapFrom)   // delete the sprites from the old map
         
-        boundaries.splice(1, 1164);
     }
 
     // 5 < buffer < 10 so the program isnt forcing controllable = true constantly
-    if (transitionBuffer > 5 && transitionBuffer < 10) {
+    if (transitionBuffer > 10) {
         player.controllable = true;
     }
 

@@ -1,16 +1,14 @@
 
 // main function, everything goes in here
-function events(x, y) {
+function events() {
     
     textAlign(CENTER, CENTER);
     fill(255);
 
     stankyDialogue.runDialogue();
-
+    pickup("grapple", 2400, 7700);
+    pickup("rangedWeapon", 100, 3200);
 }
-
-
-
 
 
 let stankyDialogue = {
@@ -26,65 +24,135 @@ let stankyDialogue = {
 
     runDialogue: function() {
 
-        let pos = createVector(1100, 4500);
+        let pos = createVector(1100, 7500);
         speakerPos = stanky.sprite.position;
 
-        if (player.sprite.position.dist(pos) < this.distance) {
+        if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
 
             switch (this.dialogueState) {
         
-                case 0: 
+                case 0:
                     this.d0(speakerPos.x, speakerPos.y - 150);
                 break;
                 
                 case 1:
-                    this.d1(speakerPos.x, speakerPos.y);
+                    this.d1(speakerPos.x, speakerPos.y - 150);
                 break;
     
                 case 2:
-                    this.d2(speakerPos.x, speakerPos.y);
+                    this.d2(speakerPos.x, speakerPos.y - 150);
                 break;    
             }
         }
     },
     
+
     d0: function(x, y) {
 
-        player.controllable = false
+        switch(true) {
+            case (this.d0Timer < 240):
+                text("Hey! you fell down here too?", x, y);
+            break;
 
-        if (this.d0Timer < 240) {
-            text("Hey! you fell down here too?", x, y);
-        }
-        if (this.d0Timer > 240 && this.d0Timer < 480) {
-            text("Mo'fuggin crackas took my beans, nigguh", x, y);
-        }
-        if (this.d0Timer > 480) {
-            player.controllable = true;
+            case (this.d0Timer < 480):
+                text("I'm trapped in here, I need help.", x, y);
+            break;
+
+            case (this.d0Timer < 720):
+                text("If you free me I can help you get out,", x, y);
+            break;
+
+            case (this.d0Timer < 960):
+                text("there's a grappling hook down there...", x, y);
+            break;
+
+            case (this.d0Timer > 960):
+                player.controllable = true;
+                this.dialogueState = 1;
+            break;
         }
 
         this.d0Timer++;
     },
 
+
     d1: function(x, y) {
-        text("case 1!", x, y);
+
+        if (player.CAN_GRAPPLE) {
+
+            switch(true) {
+
+                case (this.d1Timer < 240):
+                    text("Hey! You found it!", x, y);
+                break;
+    
+                case (this.d1Timer < 480):
+                    text("Next you'll need to see in the dark,", x, y);
+                break;
+    
+                case (this.d1Timer < 720):
+                    text("In the area to the right you'll", x, y);
+                break;
+    
+                case (this.d1Timer < 840):
+                    text("find something for that", x, y);
+                break;
+    
+                case (this.d0Timer > 960):
+                    this.dialogueState = 1;
+                    player.controllable = true;
+                break;
+            }
+        
+            this.d1Timer++;
+        }
+    
+        else {
+            text("Come back once you've found it.", x, y);
+        }
     },
 
     d2: function(x, y) {
-        text("case 1!", x, y);
+        text("case 2!", x, y);
     },
 }
 
 
 
-// other functions for tidiness
+// at (2400, 4700) place grapple pickup
+function pickup(type, x, y) {
 
-function giveGrapple(entity) {
-    entity.CAN_GRAPPLE = true;
+    let pos = createVector(x, y);
+
+    if (type == "grapple") {
+
+        if (!player.CAN_GRAPPLE) {
+            image(grapple_open, x-50, y);
+        }
+    
+        if (player.sprite.position.dist(pos) < 20) {
+            player.CAN_GRAPPLE = true;
+            player.GRAPPLE = true;
+            player.MELEE = false;
+        }
+    }
+
+
+    if (type == "rangedWeapon") {
+        if (!player.CAN_RANGED) {
+            image(pistol_img, x-50, y);
+        }
+    
+        if (player.sprite.position.dist(pos) < 20) {
+            player.GRAPPLE = false;
+            player.MELEE = false;
+            player.CAN_RANGED = true;
+            player.RANGED = true;
+        }
+    }
+
 }
 
-function giveRanged(entity) {
-    entity.CAN_RANGED = true;
-}
 
 
 // sprite related functions
@@ -141,4 +209,19 @@ function giveRanged(entity) {
     function projectileCleanup(a) {
         a.remove();
     }
+
+
+// damage
+function kill(a, b) {
+
+    if (a.health) {
+      a.health = 0;
+    }
+    
+    if (b.health) {
+      b.health = 0;
+    }
+  
+    player.health = 0;
+}
 
