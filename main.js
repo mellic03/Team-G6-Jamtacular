@@ -1,3 +1,4 @@
+let allEntities;
 
 // player
 let player;
@@ -5,7 +6,7 @@ let player;
 let playerIdleSpritesheet;
 let playerWalkSpritesheet;
 let playerMeleeSpritesheet;
-
+let playerDeathSpritesheet;
 
 // weapons
 let pistol_img;
@@ -37,7 +38,8 @@ function preload() {
     playerIdleSpritesheet = loadSpriteSheet("assets/img/player/playerIdle.png", 64, 64, 1);
     playerWalkSpritesheet = loadSpriteSheet("assets/img/player/playerWalk.png", 64, 64, 10);
     playerMeleeSpritesheet = loadSpriteSheet("assets/img/player/playerMelee.png", 64, 64, 10);
-
+    playerDeathSpritesheet = loadSpriteSheet("assets/img/player/playerDeath.png", 64, 64, 10);
+    playerDeathSpritesheet.looping = false;
 
     // weapon assets
     pistol_img = loadImage("assets/img/weapon/pistol_1.png");
@@ -65,21 +67,23 @@ function preload() {
 function setup() {
     createCanvas(800, 600);
     frameRate(60);
+    
+    allEntities = new Group();
 
-    player = new Player(300, 500, playerIdleSpritesheet, playerWalkSpritesheet);
+    player = new Player(100, 6700, playerIdleSpritesheet, playerWalkSpritesheet);
 
     // stanky has to be placed after player because it targets player
     stanky = new Stanky(1450, 7550, player);
     stankyJail = new Blockade(1300, 7400, 400, map3, mapAssets.grey_brick);
 
 
-    map1.generate();
+    map3.generate();
 
     // bat enemies
     enemy = new Enemy(2400, 10650, 900, 200, true);
 
     // "goomba" enemy
-    goomba = new Goomba(1600, 10700, player);
+    goomba = new Goomba(800, 600, player);
 
     // angler enemies
     angler = new Angler(850, 5000, player, "normal");

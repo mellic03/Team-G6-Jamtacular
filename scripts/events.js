@@ -129,29 +129,29 @@ function pickup(type, x, y) {
 
         if (!player.CAN_GRAPPLE) {
             image(grapple_open, x-50, y);
-        }
-    
-        if (player.sprite.position.dist(pos) < 20) {
-            player.CAN_GRAPPLE = true;
-            player.GRAPPLE = true;
-            player.MELEE = false;
+        
+            if (player.sprite.position.dist(pos) < 20) {
+                player.CAN_GRAPPLE = true;
+                player.GRAPPLE = true;
+                player.MELEE = false;
+            }
         }
     }
 
 
     if (type == "rangedWeapon") {
+        
         if (!player.CAN_RANGED) {
             image(pistol_img, x-50, y);
-        }
-    
-        if (player.sprite.position.dist(pos) < 20) {
-            player.GRAPPLE = false;
-            player.MELEE = false;
-            player.CAN_RANGED = true;
-            player.RANGED = true;
+        
+            if (player.sprite.position.dist(pos) < 20) {
+                player.GRAPPLE = false;
+                player.MELEE = false;
+                player.CAN_RANGED = true;
+                player.RANGED = true;
+            }
         }
     }
-
 }
 
 
@@ -167,12 +167,17 @@ function pickup(type, x, y) {
                 
                 // remove player projectiles
                 player.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
-                player.sprite.collide(map.mapObject.allBlocks);
         
                 // remove stanky projectiles
                 stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
-                stanky.sprite.collide(map.mapObject.allBlocks);
         
+
+                // entities collide with map
+                player.sprite.collide(map.mapObject.allBlocks);
+                stanky.sprite.collide(map.mapObject.allBlocks);
+                goomba.sprite.collide(map.mapObject.allBlocks);
+
+
                 if (map != map2) {
                     map.bgObject.draw();
                     map.mapObject.draw();
