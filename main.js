@@ -58,13 +58,15 @@ function preload() {
 
 let notE;
 
+let angler;
+
 function setup() {
     createCanvas(800, 600);
     frameRate(60);
 
-    map4.generate();    // generate only the first map
+    map2.generate();    // generate only the first map
 
-    player = new Player(1800, 10673, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
+    player = new Player(400, 4600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
 
     stanky = new Stanky(1450, 7550, player);    // create new boss stanky with target as player, this is for testing
 
@@ -72,6 +74,8 @@ function setup() {
 
     enemy = new Enemy(2400, 10650, 900, 200, true);
     notE = new notEnemy(1600, 10700);
+
+    angler = new Angler(850, 5000, player, "normal");
 }
 
 
@@ -89,6 +93,7 @@ function draw() {
     ui.draw(50, 50, player);
 
     enemy.update();
+    angler.draw();
 
     notE.logic(player);
 }

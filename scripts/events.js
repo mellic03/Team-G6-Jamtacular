@@ -6,6 +6,7 @@ function events() {
     fill(255);
 
     stankyDialogue.runDialogue();
+
     pickup("grapple", 2400, 7700);
     pickup("rangedWeapon", 100, 3200);
 }
@@ -20,7 +21,6 @@ let stankyDialogue = {
     d1Timer: 0,
     d2Timer: 0,
     d3Timer: 0,
-
 
     runDialogue: function() {
 
@@ -50,6 +50,7 @@ let stankyDialogue = {
     d0: function(x, y) {
 
         switch(true) {
+
             case (this.d0Timer < 240):
                 text("Hey! you fell down here too?", x, y);
             break;
@@ -66,9 +67,9 @@ let stankyDialogue = {
                 text("there's a grappling hook down there...", x, y);
             break;
 
-            case (this.d0Timer > 960):
-                player.controllable = true;
+            case (this.d0Timer > 960 && this.d0Timer < 1000):
                 this.dialogueState = 1;
+                player.controllable = true;
             break;
         }
 
@@ -99,7 +100,7 @@ let stankyDialogue = {
                 break;
     
                 case (this.d0Timer > 960):
-                    this.dialogueState = 1;
+                    this.dialogueState = 2;
                     player.controllable = true;
                 break;
             }
