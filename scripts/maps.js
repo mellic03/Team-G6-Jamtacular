@@ -126,7 +126,6 @@ let map2 = {
 }
 
 
-
 let map3 = {
 
     active: false,
@@ -142,6 +141,12 @@ let map3 = {
         this.mapObject = new Tilemap(true);
         this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick);
         
+
+        if (stanky.jailed) {
+            stankyJail.place();
+        }
+
+
         this.active = true;
     },
 
@@ -149,6 +154,7 @@ let map3 = {
         transitionMap(this, 2800, 7500, map4, 200, 10500);
         transitionMap(this, 2800, 8800, map2, 250, 4620); // dark map
     },
+
 }
 
 
@@ -174,8 +180,6 @@ let map4 = {
         transitionMap(this, 100, 10500, map3, 2700, 7500);
     },
 }
-
-
 
 
 
@@ -208,6 +212,12 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
         
         player.controllable = false;    // disables raycasting, as there is a short period of time where there are no boundaries between map transitions
 
+
+        // generate stanky jail if stanky is jailed
+        if (stanky.jailed) {
+            stankyJail.place();
+        }
+
         // move the player to the new map at the specified location
         player.sprite.position.x = xTo;
         player.sprite.position.y = yTo;
@@ -222,4 +232,45 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
     }
 
     transitionBuffer++;
+}
+
+
+// horizontal row of sprites
+class Blockade {
+    
+    constructor(x, y, bWidth, map, img) {
+
+        this.x = x;
+        this.y = y;
+        this.bWidth = bWidth;
+        this.map = map;
+        this.img = img;
+
+        this.placed = false;
+
+        this.blocks = new Group();
+    }
+
+
+    place() {
+
+            
+            for (let i = 0; i < this.bWidth; i += 100) {
+
+                let block = createSprite(this.x + i, this.y, 100, 100);
+               
+                block.addImage(this.img);
+                createBoundingBox(this.x + i, this.y, 100);
+                this.map.mapObject.allBlocks.add(block);
+                this.blocks.add(block);
+
+            }
+    }
+
+    remove() {
+
+            for (let block of this.blocks) {
+                block.remove();
+            }
+    }
 }

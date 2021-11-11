@@ -177,10 +177,10 @@ function pickup(type, x, y) {
                     map.bgObject.draw();
                     map.mapObject.draw();
                 }
+
                 else if (map == map2) {
                     player.raycastMechanic();            
                 }
-                
             }
 
             // run transitions

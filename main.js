@@ -61,23 +61,32 @@ let notE;
 let angler;
 let abAngler;
 
+let stankyJail;
+
 function setup() {
     createCanvas(800, 600);
     frameRate(60);
 
-    map2.generate();    // generate only the first map
+    player = new Player(300, 500, playerIdleSpritesheet, playerWalkSpritesheet);
 
-    player = new Player(400, 4600, playerIdleSpritesheet, playerWalkSpritesheet);   // player x, player y, idle animation, walking animation
+    // stanky has to be placed after player because it targets player
+    stanky = new Stanky(1450, 7550, player);
+    stankyJail = new Blockade(1300, 7400, 400, map3, mapAssets.grey_brick);
 
-    stanky = new Stanky(1450, 7550, player);    // create new boss stanky with target as player, this is for testing
 
-    ui = new UI(player);    // pass in player object into ui class
+    map1.generate();
 
+    // bat enemies
     enemy = new Enemy(2400, 10650, 900, 200, true);
+
+    // "goomba" enemy
     notE = new notEnemy(1600, 10700);
 
+    // angler enemies
     angler = new Angler(850, 5000, player, "normal");
     abAngler = new Angler(2000, 3100, player, "abnormal");
+
+    ui = new UI(player);
 }
 
 
@@ -98,5 +107,8 @@ function draw() {
     angler.draw();
     abAngler.draw();
 
+
     notE.logic(player);
+
 }
+
