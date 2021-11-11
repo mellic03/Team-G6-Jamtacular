@@ -121,7 +121,7 @@ let map2 = {
     },
 
     transitions() {
-        transitionMap(this, 150, 4620, map3, 2700, 8800);
+        transitionMap(this, 100, 4600, map3, 2700, 8800);
     },
 }
 
@@ -189,12 +189,13 @@ let transitionBuffer = 0;   // buffer which is used to disable all raycasting wh
 function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
 
     // in-game map transition marker
-    rect(xFrom-50, yFrom-75, 100, 100);
+    rectMode(CENTER);
+    rect(xFrom, yFrom, 100, 100);
     stroke(0);
     textAlign(LEFT, CENTER);
     textSize(20)
-    text("MAP", xFrom-50, yFrom-50);
-    text("TRANSITION", xFrom-50, yFrom-25);
+    text("MAP", xFrom-50, yFrom-25);
+    text("TRANSITION", xFrom-50, yFrom);
 
 
     // if the player reaches the transition point

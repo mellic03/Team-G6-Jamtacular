@@ -59,6 +59,7 @@ function preload() {
 let notE;
 
 let angler;
+let abAngler;
 
 function setup() {
     createCanvas(800, 600);
@@ -76,6 +77,7 @@ function setup() {
     notE = new notEnemy(1600, 10700);
 
     angler = new Angler(850, 5000, player, "normal");
+    abAngler = new Angler(2000, 3100, player, "abnormal");
 }
 
 
@@ -94,6 +96,7 @@ function draw() {
 
     enemy.update();
     angler.draw();
+    abAngler.draw();
 
     notE.logic(player);
 }
