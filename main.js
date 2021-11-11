@@ -15,7 +15,12 @@ let grapple_open;
 
 // enemy
 let stanky;
+
 let enemy;
+let stankyJail;
+let goomba;
+let angler;
+let abAngler;
 
 // ui
 let ui;
@@ -56,12 +61,6 @@ function preload() {
 }
 
 
-let notE;
-
-let angler;
-let abAngler;
-
-let stankyJail;
 
 function setup() {
     createCanvas(800, 600);
@@ -80,7 +79,7 @@ function setup() {
     enemy = new Enemy(2400, 10650, 900, 200, true);
 
     // "goomba" enemy
-    notE = new notEnemy(1600, 10700);
+    goomba = new Goomba(1600, 10700, player);
 
     // angler enemies
     angler = new Angler(850, 5000, player, "normal");
@@ -108,7 +107,7 @@ function draw() {
     abAngler.draw();
 
 
-    notE.logic(player);
+    goomba.draw(player);
 
 }
 
