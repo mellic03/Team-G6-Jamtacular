@@ -1,7 +1,5 @@
-let allEntities = [];
 
-
-// main function, everything goes in here
+// main events function, everything event-related goes in here
 function events() {
     
     textAlign(CENTER, CENTER);
@@ -11,6 +9,17 @@ function events() {
 
     pickup("grapple", 2400, 7700);
     pickup("rangedWeapon", 100, 3200);
+
+
+    // condition to free stanky
+    if (!stankyJailLeft.locked && !stankyJailRight.locked) {
+        
+        stankyJailLeft.remove();
+        stankyJailRight.remove();
+        
+        stanky.jailed = false;
+    }
+
 }
 
 
@@ -65,7 +74,7 @@ let stankyDialogue = {
             break;
 
             case (this.d0Timer < 720):
-                text("If you free me I can help you get out,", x, y);
+                text("I could blow through the ceiling if you let me out,", x, y);
             break;
 
             case (this.d0Timer < 960):
@@ -178,9 +187,11 @@ function pickup(type, x, y) {
                 stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
         
 
-                // entities collide with map
+                // entities with collisionType = "normal" will collide with map
                 for (entity of allEntities) {
-                    entity.sprite.collide(map.mapObject.allBlocks);
+                    if (entity.collisionType == "normal") {
+                        entity.sprite.collide(map.mapObject.allBlocks);
+                    }
                 }
                 
 

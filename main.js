@@ -14,8 +14,8 @@ let grapple_open;
 
 // enemy
 let stanky;
-
-let enemy;
+let bats1;
+let bats2;
 let stankyJail;
 let goomba;
 let angler;
@@ -66,25 +66,11 @@ function setup() {
     createCanvas(800, 600);
     frameRate(60);
     
-    allEntities = new Group();
+    player = new Player(300, 500, playerIdleSpritesheet, playerWalkSpritesheet);
 
-    player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);
-
-    // stanky has to be placed after player because it targets player
-    stanky = new Stanky(1450, 7550, player);
-    stankyJail = new Blockade(1400, 7400, 200, map3, mapAssets.jail_key);
+    createEnemies();
 
     map1.generate();
-
-    // bat enemies
-    enemy = new Enemy(2400, 10650, 900, 200, true);
-
-    // "goomba" enemy
-    goomba = new Goomba(2250, 1600, player);
-
-    // angler enemies
-    angler = new Angler(850, 5000, player, "normal");
-    abAngler = new Angler(2000, 3100, player, "abnormal");
 
     ui = new UI(player);
 }
@@ -95,19 +81,26 @@ function draw() {
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
     
-    stanky.draw();  // this is for testing
     player.draw();
 
-    events();
+    stanky.draw();
 
+    events();
+    
     // draws ui box
     ui.draw(50, 50, player);
 
-    enemy.update();
-    angler.draw();
-    abAngler.draw();
-
-    goomba.draw();
-
+    drawEnemies();
 }
+
+
+
+
+
+
+
+
+
+
+
 

@@ -48,7 +48,8 @@ let mapAssets = {
         this.wood = loadImage("assets/img/map/foreground/wood.png");
         this.grass = loadImage("assets/img/map/foreground/grass.png");
         this.stone = loadImage("assets/img/map/foreground/stone.png");
-        this.jail_key = loadImage("assets/img/map/foreground/jail_key.png");
+        this.jail_key_blue = loadImage("assets/img/map/foreground/jail_key_blue.png");
+        this.jail_key_red = loadImage("assets/img/map/foreground/jail_key_red.png");
         this.jail_no_key = loadImage("assets/img/map/foreground/jail_no_key.png");
     
 
@@ -129,11 +130,12 @@ let map3 = {
         this.bgObject.generate(0, 6000, this.bg_tilemap, mapAssets.bg_brick, mapAssets.bg_red_brick);
 
         this.mapObject = new Tilemap(true);
-        this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick,mapAssets.jail_no_key);
+        this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick, mapAssets.jail_no_key);
         
 
         if (stanky.jailed) {
-            stankyJail.place();
+            stankyJailLeft.place();
+            stankyJailRight.place();
         }
 
 
@@ -173,8 +175,6 @@ let map4 = {
 
 
 
-
-
 let allMaps = [map1, map2, map3, map4]; // array containing all maps
 let transitionBuffer = 0;   // buffer which is used to disable all raycasting while transitioning between maps
 
@@ -202,18 +202,11 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
         
         player.controllable = false;    // disables raycasting, as there is a short period of time where there are no boundaries between map transitions
 
-
-        // generate stanky jail if stanky is jailed
-        if (stanky.jailed) {
-            stankyJail.place();
-        }
-
         // move the player to the new map at the specified location
         player.sprite.position.x = xTo;
         player.sprite.position.y = yTo;
 
         unloadMap(mapFrom)   // delete the sprites from the old map
-        
     }
 
     // 5 < buffer < 10 so the program isnt forcing controllable = true constantly
@@ -236,31 +229,57 @@ class Blockade {
         this.map = map;
         this.img = img;
 
+        this.locked = true;
         this.placed = false;
 
         this.blocks = new Group();
+        this.boundaries = [];
     }
 
 
     place() {
-
-            
+        
+        if (this.locked) {
             for (let i = 0; i < this.bWidth; i += 100) {
 
+                // create block sprite
                 let block = createSprite(this.x + i, this.y, 100, 100);
-               
                 block.addImage(this.img);
-                createBoundingBox(this.x + i, this.y, 100);
+
+                // add sprite to groups
                 this.map.mapObject.allBlocks.add(block);
                 this.blocks.add(block);
 
+                // create raycasting boundary and push to group
+                createBoundingBox(this.x + i, this.y, 100, boundaries);
+                createBoundingBox(this.x + i, this.y, 100, this.boundaries);
             }
+        }
     }
 
     remove() {
 
-            for (let block of this.blocks) {
-                block.remove();
+        for (let block of this.blocks) {
+            block.remove();
+        }
+
+        
+        // check both the global boundaries and this.boundaires for boundaries with the same coordinate and remove them
+        for (let allBoundary of boundaries) {
+            for (let boundary of this.boundaries) {
+                if (allBoundary.a.x == boundary.a.x && allBoundary.a.y == boundary.a.y && allBoundary.b.x == boundary.b.x && allBoundary.b.y == boundary.b.y) {
+                    
+                    allBoundary.a.x = null;
+                    allBoundary.a.y = null;
+                    allBoundary.b.x = null;
+                    allBoundary.b.y = null;
+               
+                    boundary.a.x = null;
+                    boundary.a.y = null;
+                    boundary.b.x = null;
+                    boundary.b.y = null;
+                }
             }
+        }
     }
 }
