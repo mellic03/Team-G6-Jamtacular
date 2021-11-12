@@ -68,13 +68,13 @@ function setup() {
     
     allEntities = new Group();
 
-    player = new Player(900, 7500, playerIdleSpritesheet, playerWalkSpritesheet);
+    player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);
 
     // stanky has to be placed after player because it targets player
     stanky = new Stanky(1450, 7550, player);
     stankyJail = new Blockade(1400, 7400, 200, map3, mapAssets.jail_key);
 
-    map3.generate();
+    map1.generate();
 
     // bat enemies
     enemy = new Enemy(2400, 10650, 900, 200, true);
