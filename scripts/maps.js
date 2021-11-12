@@ -1,23 +1,8 @@
 
 // map legend, starts at pixel value = 30
-// these values are not absolute, the program just takes
 // the first image passed into it and maps it to the pixels with a value of 30
 // then the second image and 40 and so on,
 // I don't really like this system and would like to change it
-
-// main maps:
-// 30: grey bricks
-// 40: grass bricks
-// 50: red bricks
-// 60: wood
-// 70: grass
-// 80: stone
-
-// background maps:
-// 30: sky background
-// 40: wood background
-// 50: brick background
-// 60: red brick background
 
 
 // all maps (currently) are objects defined here, they must each have a bgObject and mapObject tilemap
@@ -35,6 +20,9 @@ let mapAssets = {
     wood: null,
     grass: null,
     stone: null,
+    jail_key: null,
+    jail_no_key: null,
+
 
     map_1_bg_tilemap: null,
     map_1_fg_tilemap: null,
@@ -60,6 +48,8 @@ let mapAssets = {
         this.wood = loadImage("assets/img/map/foreground/wood.png");
         this.grass = loadImage("assets/img/map/foreground/grass.png");
         this.stone = loadImage("assets/img/map/foreground/stone.png");
+        this.jail_key = loadImage("assets/img/map/foreground/jail_key.png");
+        this.jail_no_key = loadImage("assets/img/map/foreground/jail_no_key.png");
     
 
         // tilemaps
@@ -139,7 +129,7 @@ let map3 = {
         this.bgObject.generate(0, 6000, this.bg_tilemap, mapAssets.bg_brick, mapAssets.bg_red_brick);
 
         this.mapObject = new Tilemap(true);
-        this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick);
+        this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick,mapAssets.jail_no_key);
         
 
         if (stanky.jailed) {

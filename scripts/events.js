@@ -1,3 +1,5 @@
+let allEntities = [];
+
 
 // main function, everything goes in here
 function events() {
@@ -49,7 +51,10 @@ let stankyDialogue = {
 
     d0: function(x, y) {
 
+        player.controllable = false;
+
         switch(true) {
+
 
             case (this.d0Timer < 240):
                 text("Hey! you fell down here too?", x, y);
@@ -80,6 +85,8 @@ let stankyDialogue = {
     d1: function(x, y) {
 
         if (player.CAN_GRAPPLE) {
+
+            player.controllable = false;
 
             switch(true) {
 
@@ -117,7 +124,6 @@ let stankyDialogue = {
         text("case 2!", x, y);
     },
 }
-
 
 
 // at (2400, 4700) place grapple pickup
@@ -173,10 +179,10 @@ function pickup(type, x, y) {
         
 
                 // entities collide with map
-                player.sprite.collide(map.mapObject.allBlocks);
-                stanky.sprite.collide(map.mapObject.allBlocks);
-                goomba.sprite.collide(map.mapObject.allBlocks);
-
+                for (entity of allEntities) {
+                    entity.sprite.collide(map.mapObject.allBlocks);
+                }
+                
 
                 if (map != map2) {
                     map.bgObject.draw();
