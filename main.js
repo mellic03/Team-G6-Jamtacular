@@ -21,6 +21,10 @@ let goomba;
 let angler;
 let abAngler;
 
+// audio
+let darkMapSound;
+
+
 // ui
 let ui;
 let hpBarBg;
@@ -46,6 +50,12 @@ function preload() {
     grapple_open = loadImage("assets/img/weapon/grapple_open.png");
 
 
+    // audio
+    darkMapSound = loadSound("assets/audio/ambience/dark.mp3");
+    stanky_fight_loop = loadSound("assets/audio/stanky/fight.wav");
+
+    player_shoot_sound = loadSound("assets/audio/gun/fire.wav");
+
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
     
@@ -65,12 +75,13 @@ function preload() {
 function setup() {
     createCanvas(800, 600);
     frameRate(60);
+    stanky_fight_loop.loop();
     
-    player = new Player(300, 500, playerIdleSpritesheet, playerWalkSpritesheet);
+    player = new Player(600, 7500, playerIdleSpritesheet, playerWalkSpritesheet);
 
     createEnemies();
 
-    map1.generate();
+    map3.generate();
 
     ui = new UI(player);
 }

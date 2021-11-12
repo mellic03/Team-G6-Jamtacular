@@ -96,8 +96,11 @@ let map1 = {
 let map2 = {
 
     active: false,
-
+    sound: null,
+    
     generate() {
+
+        this.sound = darkMapSound;
 
         this.bg_tilemap = mapAssets.map_2_bg_tilemap;
         this.main_tilemap = mapAssets.map_2_fg_tilemap;

@@ -12,12 +12,14 @@ function events() {
 
 
     // condition to free stanky
-    if (!stankyJailLeft.locked && !stankyJailRight.locked) {
+    if (stankyJailLeft.locked && stankyJailRight.locked) {
         
         stankyJailLeft.remove();
         stankyJailRight.remove();
         
         stanky.jailed = false;
+        stanky.attackTarget = true;
+
     }
 
 }
@@ -169,7 +171,7 @@ function pickup(type, x, y) {
     }
 }
 
-
+let playAmbiance = true;
 
 // sprite related functions
 
@@ -203,6 +205,16 @@ function pickup(type, x, y) {
                 else if (map == map2) {
                     player.raycastMechanic();            
                 }
+
+
+                // play map audio
+                if (map.sound) {
+                    if (playAmbiance) {
+                        map.sound.play();
+                        playAmbiance = false;
+                    }
+                }
+
             }
 
             // run transitions
