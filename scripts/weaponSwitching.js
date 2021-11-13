@@ -40,4 +40,13 @@ function keyPressed() {
         player.BLUE_KEY = true;
         player.RED_KEY = false;
     }
+
+    if (keyCode === 52 && player.CAN_GOLD_KEY) {
+        player.MELEE = false;
+        player.GRAPPLE = false;
+        player.RANGED = false;
+        player.BLUE_KEY = false;
+        player.RED_KEY = false;
+        player.GOLD_KEY = true;
+    }
 }

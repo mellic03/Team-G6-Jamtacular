@@ -15,9 +15,14 @@ let red_key_img;
 let blue_key_img;
 let eye_img;
 
+// pickups
+let health_pickup;
+
 // audio
 let darkMapSound;
-
+let stanky_fight_loop;
+let player_shoot_sound;
+let player_walk_sound;
 
 // ui
 let ui;
@@ -45,16 +50,20 @@ function preload() {
 
     red_key_img = loadImage("assets/img/weapon/key_red.png");
     blue_key_img = loadImage("assets/img/weapon/key_blue.png");
-
+    gold_key_img = loadImage("assets/img/weapon/key_gold.png");
+    
     eye_img = loadImage("assets/img/weapon/eye.png");
+
+
+    // pickups
+    health_pickup = loadImage("assets/img/player/healthPickup.png");
 
     // audio
     
     darkMapSound = loadSound("assets/audio/ambience/dark.mp3");
     stanky_fight_loop = loadSound("assets/audio/stanky/fight.wav");
-
     player_shoot_sound = loadSound("assets/audio/gun/fire.wav");
-
+    player_walk_sound = loadSound("assets/audio/step_cloth2.ogg");
 
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
@@ -75,12 +84,12 @@ function preload() {
 function setup() {
     createCanvas(1000, 700);
     frameRate(60);
-    
-    player = new Player(900, 7500, playerIdleSpritesheet, playerWalkSpritesheet);
 
-    createEnemies();
+    player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);
 
-    map3.generate();
+    createEntities();
+
+    map1.generate();
 
     ui = new UI(player);
 }
@@ -103,7 +112,26 @@ function draw() {
 
     drawEnemies()
 
+
+    // invincibility and all items
+    if (keyIsDown(13))
+    {
+        //player.maxHealth = Infinity;
+        //player.health = Infinity;
+        //player.rangedWeapon.maxAmmo = Infinity;
+        //player.rangedWeapon.ammo = Infinity;
+        player.CAN_GRAPPLE = true
+        player.CAN_RANGED = true
+        player.CAN_RED_KEY = true;
+        player.CAN_BLUE_KEY = true;
+        player.CAN_NIGHTVISION = false;
+    }
+
+    if (keyIsDown(98)) {
+        player.health--;
+    }
 }
+
 
 
 

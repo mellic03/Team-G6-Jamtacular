@@ -22,7 +22,7 @@ let mapAssets = {
     stone: null,
     jail_key: null,
     jail_no_key: null,
-
+    bg_door: null,
 
     map_1_bg_tilemap: null,
     map_1_fg_tilemap: null,
@@ -41,7 +41,8 @@ let mapAssets = {
         this.bg_red_brick = loadImage("assets/img/map/background/bg_red_brick.png");
         this.bg_wood = loadImage("assets/img/map/background/bg_wood.png");
         this.bg_sky = loadImage("assets/img/map/background/bg_sky.png");
-       
+        this.bg_door = loadImage("assets/img/map/background/bg_door.png");
+
         this.grey_brick = loadImage("assets/img/map/foreground/grey_brick.png");
         this.grass_brick = loadImage("assets/img/map/foreground/grass_brick.png");
         this.red_brick = loadImage("assets/img/map/foreground/red_brick.png");
@@ -50,6 +51,7 @@ let mapAssets = {
         this.stone = loadImage("assets/img/map/foreground/stone.png");
         this.jail_key_blue = loadImage("assets/img/map/foreground/jail_key_blue.png");
         this.jail_key_red = loadImage("assets/img/map/foreground/jail_key_red.png");
+        this.jail_key_gold = loadImage("assets/img/map/foreground/jail_key_gold.png");
         this.jail_no_key = loadImage("assets/img/map/foreground/jail_no_key.png");
     
 
@@ -83,7 +85,7 @@ let map1 = {
         this.main_tilemap =  mapAssets.map_1_fg_tilemap;
 
         this.bgObject = new Tilemap(false);
-        this.bgObject.generate(0, 0, this.bg_tilemap, mapAssets.bg_sky, mapAssets.bg_wood, mapAssets.bg_brick);
+        this.bgObject.generate(0, 0, this.bg_tilemap, mapAssets.bg_sky, mapAssets.bg_wood, mapAssets.bg_brick, mapAssets.bg_door);
 
         this.mapObject = new Tilemap(true);
         this.mapObject.generate(0, 0, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
@@ -92,7 +94,7 @@ let map1 = {
     },
 
     transitions() {
-        transitionMap(this, 100, 1800, map3, 100, 6100);
+        transitionMap(this, 2800, 1800, map3, 10200, 7500);
     },
 }
 
@@ -113,7 +115,7 @@ let map2 = {
         this.main_tilemap = mapAssets.map_2_fg_tilemap;
         
         this.bgObject = new Tilemap(false);
-        this.bgObject.generate(0, 3000, this.bg_tilemap, mapAssets.bg_red_brick);
+        this.bgObject.generate(0, 3000, this.bg_tilemap, mapAssets.bg_door);
 
         this.mapObject = new Tilemap(true);
         this.mapObject.generate(0, 3000, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
@@ -122,7 +124,7 @@ let map2 = {
     },
 
     transitions() {
-        transitionMap(this, 100, 4600, map3, 2700, 8800);
+        transitionMap(this, 100, 4600, map3, 12700, 8800);
     },
 }
 
@@ -132,33 +134,36 @@ let map3 = {
     active: false,
     sound: null,
 
-    cx: 1500,
+    cx: 11500,
     cy: 7500,
     
     generate() {
-        
 
         this.bg_tilemap = mapAssets.map_3_bg_tilemap;
         this.main_tilemap = mapAssets.map_3_fg_tilemap;
 
         this.bgObject = new Tilemap(false);
-        this.bgObject.generate(0, 6000, this.bg_tilemap, mapAssets.bg_brick, mapAssets.bg_red_brick);
+        this.bgObject.generate(10000, 6000, this.bg_tilemap, mapAssets.bg_brick, mapAssets.bg_red_brick, mapAssets.bg_door);
 
         this.mapObject = new Tilemap(true);
-        this.mapObject.generate(0, 6000, this.main_tilemap, mapAssets.grey_brick, mapAssets.jail_no_key);
+        this.mapObject.generate(10000, 6000, this.main_tilemap, mapAssets.grey_brick, mapAssets.jail_no_key);
         
 
         if (stanky.jailed) {
             stankyJailLeft.place();
             stankyJailRight.place();
         }
+        if (playerJailed) {
+            playerJail.place();
+        }
 
         this.active = true;
     },
 
     transitions() {
-        transitionMap(this, 2800, 7500, map4, 200, 10500);
-        transitionMap(this, 2800, 8800, map2, 250, 4620); // dark map
+        transitionMap(this, 12800, 7500, map4, 200, 10500);
+        transitionMap(this, 12800, 8800, map2, 250, 4620); // dark map
+        transitionMap(this, 10100, 7500, map1, 2700, 1800);
     },
 
 }
@@ -178,7 +183,7 @@ let map4 = {
         this.main_tilemap = mapAssets.map_4_fg_tilemap;
 
         this.bgObject = new Tilemap(false);
-        this.bgObject.generate(0, 9000, this.bg_tilemap, mapAssets.bg_red_brick);
+        this.bgObject.generate(0, 9000, this.bg_tilemap, mapAssets.bg_red_brick, mapAssets.bg_door);
 
         this.mapObject = new Tilemap(true);
         this.mapObject.generate(0, 9000, this.main_tilemap, mapAssets.grey_brick);
@@ -187,7 +192,7 @@ let map4 = {
     },
 
     transitions() {
-        transitionMap(this, 100, 10500, map3, 2700, 7500);
+        transitionMap(this, 100, 10500, map3, 12700, 7500);
     },
 }
 
@@ -201,13 +206,13 @@ let transitionBuffer = 0;   // buffer which is used to disable all raycasting wh
 function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
 
     // in-game map transition marker
-    rectMode(CENTER);
-    rect(xFrom, yFrom, 100, 100);
-    stroke(0);
-    textAlign(LEFT, CENTER);
-    textSize(20)
-    text("MAP", xFrom-50, yFrom-25);
-    text("TRANSITION", xFrom-50, yFrom);
+    //rectMode(CENTER);
+    //rect(xFrom, yFrom, 100, 100);
+    //stroke(0);
+    //textAlign(LEFT, CENTER);
+    //textSize(20)
+    //text("MAP", xFrom-50, yFrom-25);
+    //text("TRANSITION", xFrom-50, yFrom);
 
 
     // if the player reaches the transition point
