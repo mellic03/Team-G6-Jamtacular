@@ -72,6 +72,10 @@ let mapAssets = {
 let map1 = {
 
     active: false,
+    sound: null,
+
+    cx: 1500,
+    cy: 1500,
 
     generate() {
         
@@ -97,7 +101,10 @@ let map2 = {
 
     active: false,
     sound: null,
-    
+
+    cx: 1500,
+    cy: 4500,
+
     generate() {
 
         this.sound = darkMapSound;
@@ -123,9 +130,14 @@ let map2 = {
 let map3 = {
 
     active: false,
+    sound: null,
+
+    cx: 1500,
+    cy: 7500,
     
     generate() {
         
+
         this.bg_tilemap = mapAssets.map_3_bg_tilemap;
         this.main_tilemap = mapAssets.map_3_fg_tilemap;
 
@@ -141,7 +153,6 @@ let map3 = {
             stankyJailRight.place();
         }
 
-
         this.active = true;
     },
 
@@ -156,6 +167,10 @@ let map3 = {
 let map4 = {
 
     active: false,
+    sound: null,
+    
+    cx: 1500,
+    cy: 10500,
     
     generate() {
         
@@ -201,6 +216,10 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
         
         mapTo.generate();   //generate the new map
 
+        if (mapTo.sound) {
+            mapTo.sound.loop();
+        }
+
         transitionBuffer = 0;   // reset transition buffer
         
         player.controllable = false;    // disables raycasting, as there is a short period of time where there are no boundaries between map transitions
@@ -208,6 +227,10 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
         // move the player to the new map at the specified location
         player.sprite.position.x = xTo;
         player.sprite.position.y = yTo;
+
+        if (mapFrom.sound) {
+            mapFrom.sound.stop();
+        }
 
         unloadMap(mapFrom)   // delete the sprites from the old map
     }
@@ -235,7 +258,7 @@ class Blockade {
         this.locked = true;
         this.placed = false;
 
-        this.blocks = new Group();
+        this.block;
         this.boundaries = [];
     }
 
@@ -246,12 +269,11 @@ class Blockade {
             for (let i = 0; i < this.bWidth; i += 100) {
 
                 // create block sprite
-                let block = createSprite(this.x + i, this.y, 100, 100);
-                block.addImage(this.img);
-
+                this.block = createSprite(this.x + i, this.y, 100, 100);
+                this.block.addImage("locked", this.img);
+                this.block.addImage("unlocked", mapAssets.jail_no_key);
                 // add sprite to groups
-                this.map.mapObject.allBlocks.add(block);
-                this.blocks.add(block);
+                this.map.mapObject.allBlocks.add(this.block);
 
                 // create raycasting boundary and push to group
                 createBoundingBox(this.x + i, this.y, 100, boundaries);
@@ -262,10 +284,7 @@ class Blockade {
 
     remove() {
 
-        for (let block of this.blocks) {
-            block.remove();
-        }
-
+        this.block.remove();
         
         // check both the global boundaries and this.boundaires for boundaries with the same coordinate and remove them
         for (let allBoundary of boundaries) {

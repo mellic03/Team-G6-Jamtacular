@@ -11,15 +11,9 @@ let pistol_img;
 let pistol_anim;
 let grapple_closed;
 let grapple_open;
-
-// enemy
-let stanky;
-let bats1;
-let bats2;
-let stankyJail;
-let goomba;
-let angler;
-let abAngler;
+let red_key_img;
+let blue_key_img;
+let eye_img;
 
 // audio
 let darkMapSound;
@@ -49,12 +43,18 @@ function preload() {
     grapple_closed = loadImage("assets/img/weapon/grapple_closed.png");
     grapple_open = loadImage("assets/img/weapon/grapple_open.png");
 
+    red_key_img = loadImage("assets/img/weapon/key_red.png");
+    blue_key_img = loadImage("assets/img/weapon/key_blue.png");
+
+    eye_img = loadImage("assets/img/weapon/eye.png");
 
     // audio
+    
     darkMapSound = loadSound("assets/audio/ambience/dark.mp3");
     stanky_fight_loop = loadSound("assets/audio/stanky/fight.wav");
 
     player_shoot_sound = loadSound("assets/audio/gun/fire.wav");
+
 
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
@@ -73,11 +73,10 @@ function preload() {
 
 
 function setup() {
-    createCanvas(800, 600);
+    createCanvas(1000, 700);
     frameRate(60);
-    stanky_fight_loop.loop();
     
-    player = new Player(600, 7500, playerIdleSpritesheet, playerWalkSpritesheet);
+    player = new Player(900, 7500, playerIdleSpritesheet, playerWalkSpritesheet);
 
     createEnemies();
 
@@ -85,6 +84,7 @@ function setup() {
 
     ui = new UI(player);
 }
+
 
 
 function draw() {
@@ -101,7 +101,8 @@ function draw() {
     // draws ui box
     ui.draw(50, 50, player);
 
-    drawEnemies();
+    drawEnemies()
+
 }
 
 

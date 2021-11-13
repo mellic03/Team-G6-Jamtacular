@@ -1,0 +1,39 @@
+FirstJob.txt
+    FirstJob by Nurf Designs
+    https://www.fontget.com/font/first-job/
+
+
+AUDIO
+    iom2b:
+    recording copyright 2018 by Eric Buisson
+    Dark Ambience Loop:
+    "Dark Ambience Loop by Iwan Gabovitch qubodup.net" or "Dark Ambience Loop by Iwan Gabovitch http://opengameart.org/users/qubodup"
+
+
+Images
+    Imp sprite:
+    Ahmet Avci, https://www.patreon.com/elthen
+    
+    Anglerman sprite:
+    Stephen "Redshrike" Challener (Sprites) 5hiroi (concepts) Heather Lee Harvey (concept) (EmeraldActivities.com) www.OpenGameArt.org
+
+    Gun:
+    CrySa, https://crysa.itch.io/dystopian-guns
+
+    Grotesque Surreal Creature 7 (modified):
+    Cocco, https://opengameart.org/users/dicocco
+
+    Rogue spritesheet:
+    Animated Rogue by Calciumtrice, usable under Creative Commons Attribution 3.0 license.
+
+
+
+hpBar
+    Author: ChaosRobH 
+    https://opengameart.org/content/minimalist-bar-system-0
+
+meelee.png
+    420 RPG Icons - 34x34, .png format
+    By Henrique Lazarini (a.k.a.: Ails)
+    https://www.deviantart.com/7soul1/art/129892453
+

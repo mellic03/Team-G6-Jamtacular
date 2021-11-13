@@ -1,5 +1,17 @@
 let allEntities = [];
 
+
+let stanky;
+let bats1;
+let bats2;
+let bats3;
+let stankyJail;
+let goomba;
+let angler;
+let abAngler;
+
+
+
 function createEnemies() {
     
     // stanky
@@ -8,8 +20,9 @@ function createEnemies() {
     stankyJailRight = new Blockade(1500, 7400, 100, map3, mapAssets.jail_key_red);
 
     // bat enemies
-    bats1 = new Enemy(2400, 10650, 900, 200); // in dark map
-    bats2 = new Enemy(800, 5750, 400, 200); // near gold key
+    bats1 = new Bats(2400, 10650, 900, 200); // near red key
+    bats2 = new Bats(800, 5750, 400, 200); // 
+    bats3 = new Bats(400, 10000, 650, 600); // 
 
     // "goomba" enemy
     goomba = new Goomba(2250, 1600, player);    // at spawn
@@ -23,9 +36,31 @@ function createEnemies() {
 
 // draw all enemies
 function drawEnemies() {
-    for (let entity of allEntities) {
-        if (entity.name == "goomba" || entity.name == "angler" || entity.name == "bats") {
-            entity.draw();
+
+    for (let map of allMaps) {
+
+        if (map.active) {
+            // entities with collisionType = "normal" will collide with map
+            for (entity of allEntities) {
+
+                // if entity is within bounds of current map 
+                //if (entity.sprite.position.y < map.cy + 1500 && entity.sprite.position.y > map.cy - 1500) {
+
+                    if (entity.name == "goomba" || entity.name == "angler" || entity.name == "bats") {
+                        entity.draw();
+                    }
+
+                    if (entity.collisionType == "normal") {
+                        entity.sprite.collide(map.mapObject.allBlocks);
+                    }
+                //}
+            }
+
+            // remove player projectiles
+            player.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
+
+            // remove stanky projectiles
+            stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
         }
     }
 }

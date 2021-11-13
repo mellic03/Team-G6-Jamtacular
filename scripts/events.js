@@ -1,4 +1,7 @@
 
+let stankySwitch = true;
+
+
 // main events function, everything event-related goes in here
 function events() {
     
@@ -9,18 +12,59 @@ function events() {
 
     pickup("grapple", 2400, 7700);
     pickup("rangedWeapon", 100, 3200);
+    pickup("nightVision", 300, 9500);
+    pickup("redKey", 1900, 5800);
+    pickup("blueKey", 2700, 11600);
 
 
-    // condition to free stanky
-    if (stankyJailLeft.locked && stankyJailRight.locked) {
-        
-        stankyJailLeft.remove();
-        stankyJailRight.remove();
-        
-        stanky.jailed = false;
-        stanky.attackTarget = true;
+    if (keyIsDown(97)) {
+        stankyJailLeft.locked = false;
+        stankyJailRight.locked = false;
 
     }
+
+    // condition to free stanky
+
+
+    // unlock blue lock
+    if (stankyJailLeft.block && stankyJailRight.block) {
+
+        if (player.sprite.position.dist(stankyJailLeft.block.position) < 100 && player.BLUE_KEY) {
+            if (mouseIsPressed && mouseButton == LEFT) {
+                stankyJailLeft.locked = false;
+                stankyJailLeft.block.changeImage("unlocked");}
+        }
+    
+        // unlock red lock
+        if (player.sprite.position.dist(stankyJailRight.block.position) < 100 && player.RED_KEY) {
+            if (mouseIsPressed && mouseButton == LEFT) {
+                stankyJailRight.locked = false;
+                stankyJailRight.block.changeImage("unlocked");
+            }
+        }
+    
+    
+        // release stanky
+        if (!stankyJailLeft.locked && !stankyJailRight.locked && stankySwitch) {
+            
+            stankyJailLeft.remove();
+            stankyJailRight.remove();
+            
+            player.sprite.velocity.x -= 15;
+            player.sprite.velocity.y -= 50;
+            
+            stanky.jailed = false;
+            stanky.attackTarget = true;
+            
+    
+            map3.sound = stanky_fight_loop;
+            map3.sound.loop();
+            stankySwitch = false;
+        }  
+    }
+
+
+
 
 }
 
@@ -62,8 +106,6 @@ let stankyDialogue = {
 
     d0: function(x, y) {
 
-        player.controllable = false;
-
         switch(true) {
 
 
@@ -76,16 +118,15 @@ let stankyDialogue = {
             break;
 
             case (this.d0Timer < 720):
-                text("I could blow through the ceiling if you let me out,", x, y);
+                text("I could blow apart that lock if you let me out,", x, y);
             break;
 
             case (this.d0Timer < 960):
-                text("there's a grappling hook down there...", x, y);
+                text("there's a grappling hook down there somewhere...", x, y);
             break;
 
             case (this.d0Timer > 960 && this.d0Timer < 1000):
                 this.dialogueState = 1;
-                player.controllable = true;
             break;
         }
 
@@ -97,8 +138,6 @@ let stankyDialogue = {
 
         if (player.CAN_GRAPPLE) {
 
-            player.controllable = false;
-
             switch(true) {
 
                 case (this.d1Timer < 240):
@@ -106,20 +145,15 @@ let stankyDialogue = {
                 break;
     
                 case (this.d1Timer < 480):
-                    text("Next you'll need to see in the dark,", x, y);
+                    text("Next you'll need to find the keys for these locks,", x, y);
                 break;
     
                 case (this.d1Timer < 720):
-                    text("In the area to the right you'll", x, y);
+                    text("I know one is in the dark area below...", x, y);
                 break;
     
-                case (this.d1Timer < 840):
-                    text("find something for that", x, y);
-                break;
-    
-                case (this.d0Timer > 960):
+                case (this.d0Timer > 840):
                     this.dialogueState = 2;
-                    player.controllable = true;
                 break;
             }
         
@@ -145,7 +179,7 @@ function pickup(type, x, y) {
     if (type == "grapple") {
 
         if (!player.CAN_GRAPPLE) {
-            image(grapple_open, x-50, y);
+            image(grapple_open, x, y);
         
             if (player.sprite.position.dist(pos) < 20) {
                 player.CAN_GRAPPLE = true;
@@ -155,11 +189,10 @@ function pickup(type, x, y) {
         }
     }
 
-
     if (type == "rangedWeapon") {
         
         if (!player.CAN_RANGED) {
-            image(pistol_img, x-50, y);
+            image(pistol_img, x, y);
         
             if (player.sprite.position.dist(pos) < 20) {
                 player.GRAPPLE = false;
@@ -169,6 +202,50 @@ function pickup(type, x, y) {
             }
         }
     }
+
+    if (type == "nightVision") {
+        
+        if (!player.CAN_NIGHTVISION) {
+
+            image(eye_img, x, y);
+
+            if (player.sprite.position.dist(pos) < 20) {
+                player.CAN_NIGHTVISION = true;
+            }
+        }
+
+    }
+    
+    if (type == "blueKey") {
+        
+        if (!player.CAN_BLUE_KEY) {
+            image(blue_key_img, x, y);
+        
+            if (player.sprite.position.dist(pos) < 20) {
+                player.GRAPPLE = false;
+                player.MELEE = false;
+                player.RANGED = false;
+                player.BLUE_KEY = true;
+            }
+        }
+    }
+
+    if (type == "redKey") {
+        
+        if (!player.CAN_RED_KEY) {
+            image(red_key_img, x, y);
+        
+            if (player.sprite.position.dist(pos) < 20) {
+                player.GRAPPLE = false;
+                player.MELEE = false;
+                player.RANGED = false;
+                player.BLUE_KEY = false;
+                player.CAN_RED_KEY = true;
+                player.RED_KEY = true;
+            }
+        }
+    }
+
 }
 
 let playAmbiance = true;
@@ -182,20 +259,6 @@ let playAmbiance = true;
 
             if (map.active) {   // draw map if map is active
                 
-                // remove player projectiles
-                player.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
-        
-                // remove stanky projectiles
-                stanky.projectiles.collide(map.mapObject.allBlocks, projectileCleanup);
-        
-
-                // entities with collisionType = "normal" will collide with map
-                for (entity of allEntities) {
-                    if (entity.collisionType == "normal") {
-                        entity.sprite.collide(map.mapObject.allBlocks);
-                    }
-                }
-                
 
                 if (map != map2) {
                     map.bgObject.draw();
@@ -205,18 +268,8 @@ let playAmbiance = true;
                 else if (map == map2) {
                     player.raycastMechanic();            
                 }
-
-
-                // play map audio
-                if (map.sound) {
-                    if (playAmbiance) {
-                        map.sound.play();
-                        playAmbiance = false;
-                    }
-                }
-
+            
             }
-
             // run transitions
             map.transitions();
         }
