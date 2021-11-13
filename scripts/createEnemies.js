@@ -10,7 +10,7 @@ let angler;
 let abAngler;
 
 let pickups = [];
-let triggerJail;
+let goldKeyPickup;
 
 let playerJail;
 
@@ -29,15 +29,14 @@ function createEntities() {
     stanky = new Stanky(11450, 7550, player);
     stankyJailLeft = new Blockade(11400, 7400, 100, map3, mapAssets.jail_key_blue);
     stankyJailRight = new Blockade(11500, 7400, 100, map3, mapAssets.jail_key_red);
-
+    
+    // player jail
+    playerJail = new Blockade(10300, 7500, 100, map3, mapAssets.jail_key_gold);
+   
     // blockades to add on stanky release
     blockades_postRelease[0] = new Blockade(11200, 7600, 100, map3, mapAssets.jail_no_key);
     blockades_postRelease[1] = new Blockade(11700, 7600, 100, map3, mapAssets.jail_no_key);
     blockades_postRelease[2] = new Blockade(12600, 7500, 100, map3, mapAssets.jail_no_key);
-
-
-    // player jail
-    playerJail = new Blockade(10300, 7500, 100, map3, mapAssets.jail_key_gold);
 
     // bat enemies
     bats1 = new Bats(2400, 10650, 900, 200); // near red key
@@ -51,7 +50,6 @@ function createEntities() {
     angler = new Angler(850, 5000, player, "normal");
     abAngler = new Angler(2000, 3100, player, "abnormal");
 
-
     // pickups
     pickups[0] = new Pickup("grapple", 12400, 7700);
     pickups[1] = new Pickup("rangedWeapon", 100, 3200);
@@ -59,7 +57,7 @@ function createEntities() {
     pickups[3] = new Pickup("redKey", 1900, 5800);
     pickups[4] = new Pickup("blueKey", 2700, 11600);
 
-    triggerJail = new Pickup("triggerJail", 10400, 7500);
+    goldKeyPickup = new Pickup("goldKey", 0, 0);
 }
 
 

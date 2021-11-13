@@ -23,6 +23,9 @@ let darkMapSound;
 let stanky_fight_loop;
 let player_shoot_sound;
 let player_walk_sound;
+let goomba_hurt;
+let goomba_death;
+let meleeSound;
 
 // ui
 let ui;
@@ -59,11 +62,19 @@ function preload() {
     health_pickup = loadImage("assets/img/player/healthPickup.png");
 
     // audio
-    
-    darkMapSound = loadSound("assets/audio/ambience/dark.mp3");
+    pianoHit = loadSound("assets/audio/other/pianohit.wav");
+    darkMapSound = loadSound("assets/audio/other/dark.mp3");
     stanky_fight_loop = loadSound("assets/audio/stanky/fight.wav");
     player_shoot_sound = loadSound("assets/audio/gun/fire.wav");
     player_walk_sound = loadSound("assets/audio/step_cloth2.ogg");
+
+    goomba_hurt = loadSound("assets/audio/enemy/goomba/monster-17.wav");
+    angler_hurt = loadSound("assets/audio/enemy/angler/eagle3.mp3");
+
+    click = loadSound("assets/audio/other/click.mp3");
+    meleeSound = loadSound("assets/audio/other/melee sound.wav");
+    pickupSound = loadSound("assets/audio/other/item_pickup.flac");
+
 
     // fonts
     myFont = loadFont("assets/fonts/FirstJob.ttf");
@@ -101,9 +112,9 @@ function draw() {
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
     
-    player.draw();
-
     stanky.draw();
+
+    player.draw();
 
     events();
     
@@ -116,10 +127,10 @@ function draw() {
     // invincibility and all items
     if (keyIsDown(13))
     {
-        //player.maxHealth = Infinity;
-        //player.health = Infinity;
-        //player.rangedWeapon.maxAmmo = Infinity;
-        //player.rangedWeapon.ammo = Infinity;
+        player.maxHealth = Infinity;
+        player.health = Infinity;
+        player.rangedWeapon.maxAmmo = Infinity;
+        player.rangedWeapon.ammo = Infinity;
         player.CAN_GRAPPLE = true
         player.CAN_RANGED = true
         player.CAN_RED_KEY = true;

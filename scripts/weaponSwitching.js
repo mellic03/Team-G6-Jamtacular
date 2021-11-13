@@ -7,6 +7,7 @@ function keyPressed() {
         player.RANGED = false;
         player.BLUE_KEY = false;
         player.RED_KEY = false;
+        player.GOLD_KEY = false;
     }
 
     if (keyCode === 50 && player.CAN_GRAPPLE) {
@@ -15,6 +16,7 @@ function keyPressed() {
         player.RANGED = false;
         player.BLUE_KEY = false;
         player.RED_KEY = false;
+        player.GOLD_KEY = false;
     }
     
     if (keyCode === 51 && player.CAN_RANGED) {
@@ -23,6 +25,7 @@ function keyPressed() {
         player.RANGED = true;
         player.BLUE_KEY = false;
         player.RED_KEY = false;
+        player.GOLD_KEY = false;
     }
 
     if (keyCode === 52 && player.CAN_RED_KEY) {

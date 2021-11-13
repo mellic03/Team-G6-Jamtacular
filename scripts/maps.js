@@ -153,9 +153,7 @@ let map3 = {
             stankyJailLeft.place();
             stankyJailRight.place();
         }
-        if (playerJailed) {
-            playerJail.place();
-        }
+
 
         this.active = true;
     },

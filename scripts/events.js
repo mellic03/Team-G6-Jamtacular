@@ -1,5 +1,6 @@
 let playerJailed = false;
-let playerJailPlaceSwitch = true;
+
+let toggleSoundSwitch = true;
 
 let anglers = [];
 let goombas = [];
@@ -7,31 +8,30 @@ let goombas = [];
 
 // main events function, everything event-related goes in here
 function events() {
-    
+
     textAlign(CENTER, CENTER);
     fill(255);
 
+    playerDialogue.runDialogue();
     stankyDialogue.runDialogue();
 
     for (let pickup of pickups) {
         pickup.draw();
     }
 
-    if (keyIsDown(97)) {
-        stankyJailLeft.locked = false;
-        stankyJailRight.locked = false;
-
-    }
-
     // condition to free stanky
 
-    // unlock blue lock
     if (stankyJailLeft.block && stankyJailRight.block) {
-
+       
+        // unlock blue lock
         if (player.sprite.position.dist(stankyJailLeft.block.position) < 100 && player.BLUE_KEY) {
             if (mouseIsPressed && mouseButton == LEFT) {
                 stankyJailLeft.locked = false;
                 stankyJailLeft.block.changeImage("unlocked");
+                
+                if (!click.isPlaying()) {
+                    click.play();
+                }
             }
         }
     
@@ -40,9 +40,30 @@ function events() {
             if (mouseIsPressed && mouseButton == LEFT) {
                 stankyJailRight.locked = false;
                 stankyJailRight.block.changeImage("unlocked");
+
+                if (!click.isPlaying()) {
+                    click.play();
+                }
             }
         }
     
+        // unlock gold lock
+        if (playerJailed) {
+            if (player.sprite.position.dist(playerJail.block.position) < 100 && player.GOLD_KEY) {
+                if (mouseIsPressed && mouseButton == LEFT) {
+                    playerJail.remove();
+                    player.GOLD_KEY = false;
+                    player.CAN_GOLD_KEY = false;
+                    player.MELEE = true;
+
+                    if (!click.isPlaying()) {
+                        click.play();
+                    }
+                }
+            }
+        }
+
+
         // release stanky
         if (!stankyJailLeft.locked && !stankyJailRight.locked && stanky.jailed) {
             
@@ -50,9 +71,15 @@ function events() {
             stankyJailLeft.remove();
             stankyJailRight.remove();
             
-            // push player away and switch to grapple
+            // push player away and switch to melee
             player.sprite.velocity.x -= 15;
             player.sprite.velocity.y -= 50;
+
+            player.BLUE_KEY = false;
+            player.RED_KEY = false;
+            player.CAN_BLUE_KEY = false;
+            player.CAN_RED_KEY = false;
+            player.MELEE = true;
 
             stanky.jailed = false;
             stanky.attackTarget = true;
@@ -77,9 +104,28 @@ function events() {
             goombas[2] = new Goomba(11500, 6400, player, 11200, 11700);
         }
 
+
+        if (stanky.health < 1) {
+
+            if (toggleSoundSwitch) {
+                map3.sound.stop();
+                map3.sound = pianoHit;
+                map3.sound.play();
+                toggleSoundSwitch = false;
+            }
+
+            goldKeyPickup.pos = stanky.sprite.position;
+            goldKeyPickup.draw();
+        }
+        
+
         // player jail
-        if (playerJailPlaceSwitch) {
-            triggerJail.draw();
+        if (!playerJailed) {
+
+            if (dist(player.sprite.position.x, player.sprite.position.y, 10400, 7500)  < 20) {
+                playerJail.place();
+                playerJailed = true;
+            }
         }
     }
 }
@@ -97,46 +143,55 @@ let playerDialogue = {
 
     runDialogue: function() {
 
-        let pos = createVector(11100, 7500);
         let speakerPos = player.sprite.position;
-
-        switch (this.dialogueState) {
-    
-            case 0:
-                if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
-                    this.d0(speakerPos.x, speakerPos.y - 150);
-                }
-            break;
+        if (ui.STATE == ui.MAIN_GAME) {
             
-            case 1:
-                if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
-                    this.d1(speakerPos.x, speakerPos.y - 150);
-                }
-            break;
-
-            case 2:
-                this.d2(speakerPos.x, speakerPos.y - 150);
-            break;    
+            switch (this.dialogueState) {
+    
+                case 0:
+                    this.d0(speakerPos.x, speakerPos.y - 50);
+                break;
+                
+                case 1:
+                    this.d1(speakerPos.x, speakerPos.y - 50);
+                break;
+    
+                case 2:
+                    this.d2(speakerPos.x, speakerPos.y - 50);
+                break;    
+            }
         }
+
     },
 
 
     d0: function(x, y) {
 
-        switch(true) {
+        if (this.d0Timer < 240) {
+            text("Oh boy I can't wait to get home", x, y);
+        }
 
-            case (this.d0Timer < 240):
-                text("Hey! you fell down here too?", x, y);
-            break;
-
+        if (player.sprite.position.x > 1050 && !player.falling) {
+            this.dialogueState = 1;
         }
 
         this.d0Timer++;
     },
 
+
+    d1: function(x, y) {
+
+        switch(true) {
+
+            case (this.d1Timer < 240):
+                text("Huh, never noticed that before.", x, y);
+            break;
+
+        }
+
+        this.d1Timer++;
+    },
 }
-
-
 
 
 let stankyDialogue = {
@@ -150,27 +205,31 @@ let stankyDialogue = {
 
     runDialogue: function() {
 
-        let pos = createVector(11100, 7500);
-        let speakerPos = stanky.sprite.position;
-
-        switch (this.dialogueState) {
-    
-            case 0:
-                if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
-                    this.d0(speakerPos.x, speakerPos.y - 150);
-                }
-            break;
+        if (stanky.health > 0) {
             
-            case 1:
-                if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
-                    this.d1(speakerPos.x, speakerPos.y - 150);
-                }
-            break;
-
-            case 2:
-                this.d2(speakerPos.x, speakerPos.y - 150);
-            break;    
+            let pos = createVector(11100, 7500);
+            let speakerPos = stanky.sprite.position;
+    
+            switch (this.dialogueState) {
+        
+                case 0:
+                    if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
+                        this.d0(speakerPos.x, speakerPos.y - 150);
+                    }
+                break;
+                
+                case 1:
+                    if (player.sprite.position.dist(pos) < this.distance && !player.falling) {
+                        this.d1(speakerPos.x, speakerPos.y - 150);
+                    }
+                break;
+    
+                case 2:
+                    this.d2(speakerPos.x, speakerPos.y - 150);
+                break;    
+            }
         }
+
     },
     
 
