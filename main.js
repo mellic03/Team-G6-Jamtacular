@@ -26,6 +26,7 @@ let player_walk_sound;
 let goomba_hurt;
 let goomba_death;
 let meleeSound;
+let mapSound1;
 
 // ui
 let ui;
@@ -64,6 +65,7 @@ function preload() {
     // audio
     pianoHit = loadSound("assets/audio/other/pianohit.wav");
     darkMapSound = loadSound("assets/audio/other/dark.mp3");
+    mapSound1 = loadSound("assets/audio/other/rbis.wav");
     stanky_fight_loop = loadSound("assets/audio/stanky/fight.wav");
     player_shoot_sound = loadSound("assets/audio/gun/fire.wav");
     player_walk_sound = loadSound("assets/audio/step_cloth2.ogg");
@@ -91,7 +93,6 @@ function preload() {
 }
 
 
-
 function setup() {
     createCanvas(1000, 700);
     frameRate(60);
@@ -106,12 +107,13 @@ function setup() {
 }
 
 
-
 function draw() {
     background(0);
 
     mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
     
+    drawEntities()
+
     stanky.draw();
 
     player.draw();
@@ -120,8 +122,6 @@ function draw() {
     
     // draws ui box
     ui.draw(50, 50, player);
-
-    drawEnemies()
 
 
     // invincibility and all items
@@ -135,12 +135,9 @@ function draw() {
         player.CAN_RANGED = true
         player.CAN_RED_KEY = true;
         player.CAN_BLUE_KEY = true;
-        player.CAN_NIGHTVISION = false;
+        player.CAN_NIGHTVISION = true;
     }
 
-    if (keyIsDown(98)) {
-        player.health--;
-    }
 }
 
 

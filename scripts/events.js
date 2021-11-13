@@ -2,9 +2,6 @@ let playerJailed = false;
 
 let toggleSoundSwitch = true;
 
-let anglers = [];
-let goombas = [];
-
 
 // main events function, everything event-related goes in here
 function events() {
@@ -55,7 +52,7 @@ function events() {
                     player.GOLD_KEY = false;
                     player.CAN_GOLD_KEY = false;
                     player.MELEE = true;
-
+                    map3.sound = darkMapSound;
                     if (!click.isPlaying()) {
                         click.play();
                     }
@@ -85,49 +82,57 @@ function events() {
             stanky.attackTarget = true;
             
             // play music
+            map3.sound.stop();
             map3.sound = stanky_fight_loop;
-            map3.sound.loop();
+            map3.sound.play();
             stankyDialogue.dialogueState = 2;
 
             for (let blockade of blockades_postRelease) {
                 blockade.place();
             }
 
-            // add 5 angler enemies
-            for (let i = 0; i < 5; i++) {
-                anglers[i] = new Angler(random(10000, 12800), random(6000, 7500), player, "normal");
+            // add 3 angler enemies
+            for (let i = 0; i < 3; i++) {
+                anglers.push(new Angler(random(10000, 12800), random(6000, 7500), player, "normal"));
             }
 
             // add 3 goomba enemies
-            goombas[0] = new Goomba(10700, 6800, player, 10500, 10900);
-            goombas[1] = new Goomba(12200, 6800, player, 12000, 12400);
-            goombas[2] = new Goomba(11500, 6400, player, 11200, 11700);
-        }
-
-
-        if (stanky.health < 1) {
-
-            if (toggleSoundSwitch) {
-                map3.sound.stop();
-                map3.sound = pianoHit;
-                map3.sound.play();
-                toggleSoundSwitch = false;
-            }
-
-            goldKeyPickup.pos = stanky.sprite.position;
-            goldKeyPickup.draw();
-        }
-        
-
-        // player jail
-        if (!playerJailed) {
-
-            if (dist(player.sprite.position.x, player.sprite.position.y, 10400, 7500)  < 20) {
-                playerJail.place();
-                playerJailed = true;
-            }
+            goombae[4] = new Goomba(10700, 6800, player, 10500, 10900);
+            goombae[5] = new Goomba(12200, 6800, player, 12000, 12400);
+            goombae[6] = new Goomba(11500, 6400, player, 11200, 11700);
         }
     }
+
+    if (stanky.health < 1) {
+
+        if (toggleSoundSwitch) {
+            map3.sound.stop();
+            map3.sound = pianoHit;
+            map3.sound.loop();
+            toggleSoundSwitch = false;
+        }
+
+        goldKeyPickup.pos = stanky.sprite.position;
+        goldKeyPickup.draw();
+    }
+    
+
+    // player jail
+    if (!playerJailed) {
+
+        if (dist(player.sprite.position.x, player.sprite.position.y, 10400, 7500)  < 20) {
+            playerJail.place();
+            click.play();
+            playerJailed = true;
+            playerDialogue.dialogueState = 2;
+        }
+    }
+
+    // condition for "finishing" the game is being on the surface with the ability to grapple
+    if (player.CAN_GRAPPLE && player.sprite.position.x < 1000 && player.sprite.position.y < 800) {
+        ui.STATE = ui.FINISHED;
+    }
+
 }
 
 
@@ -181,15 +186,20 @@ let playerDialogue = {
 
     d1: function(x, y) {
 
-        switch(true) {
-
-            case (this.d1Timer < 240):
-                text("Huh, never noticed that before.", x, y);
-            break;
-
+        if (this.d1Timer < 240) {
+            text("Huh, never noticed that before.", x, y);
         }
 
         this.d1Timer++;
+    },
+
+    d2: function(x, y) {
+
+        if (this.d2Timer < 240) {
+            text("...", x, y);
+        }
+
+        this.d2Timer++;
     },
 }
 
@@ -311,31 +321,24 @@ let stankyDialogue = {
 }
 
 
-let playAmbiance = true;
 
 // sprite related functions
 
-    // handles player collisions and map drawing
+    // handles map drawing
     function mapHandler() {
+        
+        active_map.bgObject.draw();
 
-        for (let map of allMaps) {  // for each map
-
-            if (map.active) {   // draw map if map is active
-                
-                map.bgObject.draw();
-
-                if (map != map2) {
-                    map.mapObject.draw();
-                }
-
-                else if (map == map2) {
-                    player.raycastMechanic();            
-                }
-            
-            }
-            // run transitions
-            map.transitions();
+        if (active_map != map2) {
+            active_map.mapObject.draw();
         }
+
+        else if (active_map == map2) {
+            player.raycastMechanic();            
+        }
+    
+        // run transitions
+        active_map.transitions();
     }
 
 

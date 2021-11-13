@@ -7,6 +7,7 @@
 
 // all maps (currently) are objects defined here, they must each have a bgObject and mapObject tilemap
 
+let active_map;
 
 let mapAssets = {
 
@@ -81,6 +82,8 @@ let map1 = {
 
     generate() {
         
+        this.sound = mapSound1;
+        
         this.bg_tilemap = mapAssets.map_1_bg_tilemap;
         this.main_tilemap =  mapAssets.map_1_fg_tilemap;
 
@@ -91,6 +94,8 @@ let map1 = {
         this.mapObject.generate(0, 0, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
         
         this.active = true;
+
+        active_map = this;
     },
 
     transitions() {
@@ -121,6 +126,8 @@ let map2 = {
         this.mapObject.generate(0, 3000, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
         
         this.active = true;
+
+        active_map = this;
     },
 
     transitions() {
@@ -139,6 +146,8 @@ let map3 = {
     
     generate() {
 
+        this.sound = mapSound1;
+
         this.bg_tilemap = mapAssets.map_3_bg_tilemap;
         this.main_tilemap = mapAssets.map_3_fg_tilemap;
 
@@ -154,8 +163,13 @@ let map3 = {
             stankyJailRight.place();
         }
 
+        if (playerJailed) {
+            playerJail.place();
+        }
 
         this.active = true;
+   
+        active_map = this;
     },
 
     transitions() {
@@ -177,6 +191,8 @@ let map4 = {
     
     generate() {
         
+        this.sound = mapSound1;
+
         this.bg_tilemap = mapAssets.map_4_bg_tilemap;
         this.main_tilemap = mapAssets.map_4_fg_tilemap;
 
@@ -187,6 +203,8 @@ let map4 = {
         this.mapObject.generate(0, 9000, this.main_tilemap, mapAssets.grey_brick);
         
         this.active = true;
+    
+        active_map = this;
     },
 
     transitions() {
@@ -203,25 +221,12 @@ let transitionBuffer = 0;   // buffer which is used to disable all raycasting wh
 // transition between maps
 function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
 
-    // in-game map transition marker
-    //rectMode(CENTER);
-    //rect(xFrom, yFrom, 100, 100);
-    //stroke(0);
-    //textAlign(LEFT, CENTER);
-    //textSize(20)
-    //text("MAP", xFrom-50, yFrom-25);
-    //text("TRANSITION", xFrom-50, yFrom);
-
-
     // if the player reaches the transition point
     if (dist(player.sprite.position.x, player.sprite.position.y, xFrom, yFrom) < 100) {
         boundaries.length = 0;
         
         mapTo.generate();   //generate the new map
 
-        if (mapTo.sound) {
-            mapTo.sound.loop();
-        }
 
         transitionBuffer = 0;   // reset transition buffer
         
@@ -232,13 +237,16 @@ function transitionMap(mapFrom, xFrom, yFrom, mapTo, xTo, yTo) {
         player.sprite.position.y = yTo;
 
         if (mapFrom.sound) {
-            mapFrom.sound.stop();
+            mapFrom.sound.pause();
+        }
+
+        if (mapTo.sound) {
+            mapTo.sound.loop();
         }
 
         unloadMap(mapFrom)   // delete the sprites from the old map
     }
 
-    // 5 < buffer < 10 so the program isnt forcing controllable = true constantly
     if (transitionBuffer > 10) {
         player.controllable = true;
     }
@@ -268,21 +276,26 @@ class Blockade {
 
     place() {
         
-        if (this.locked) {
-            for (let i = 0; i < this.bWidth; i += 100) {
+        for (let i = 0; i < this.bWidth; i += 100) {
 
-                // create block sprite
-                this.block = createSprite(this.x + i, this.y, 100, 100);
-                this.block.addImage("locked", this.img);
-                this.block.addImage("unlocked", mapAssets.jail_no_key);
-                // add sprite to groups
-                this.map.mapObject.allBlocks.add(this.block);
-
-                // create raycasting boundary and push to group
-                createBoundingBox(this.x + i, this.y, 100, boundaries);
-                createBoundingBox(this.x + i, this.y, 100, this.boundaries);
+            // create block sprite
+            this.block = createSprite(this.x + i, this.y, 100, 100);
+            this.block.addImage("locked", this.img);
+            this.block.addImage("unlocked", mapAssets.jail_no_key);
+            if (this.locked) {
+                this.block.changeImage("locked");
             }
+            else if (!this.locked) {
+                this.block.changeImage("unlocked");
+            }
+            // add sprite to groups
+            this.map.mapObject.allBlocks.add(this.block);
+
+            // create raycasting boundary and push to group
+            createBoundingBox(this.x + i, this.y, 100, boundaries);
+            createBoundingBox(this.x + i, this.y, 100, this.boundaries);
         }
+        
     }
 
     remove() {
