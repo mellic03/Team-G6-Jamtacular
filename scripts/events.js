@@ -97,9 +97,9 @@ function events() {
             }
 
             // add 3 goomba enemies
-            goombae[4] = new Goomba(10700, 6800, player, 10500, 10900);
-            goombae[5] = new Goomba(12200, 6800, player, 12000, 12400);
-            goombae[6] = new Goomba(11500, 6400, player, 11200, 11700);
+            goombae.push(new Goomba(10700, 6800, player, 10500, 10900));
+            goombae.push(new Goomba(12200, 6800, player, 12000, 12400));
+            goombae.push(new Goomba(11500, 6400, player, 11200, 11700));
         }
     }
 

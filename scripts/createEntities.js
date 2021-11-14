@@ -37,26 +37,26 @@ function createEntities() {
     blockades_postRelease[2] = new Blockade(12600, 7500, 100, map3, mapAssets.jail_no_key);
 
     // bat enemies
-    bats[0] = new Bats(2400, 10650, 900, 200); // near red key
-    bats[1] = new Bats(800, 5750, 400, 200); // 
-    bats[2] = new Bats(400, 10000, 650, 600); // 
+    bats.push(new Bats(2400, 10650, 900, 200));
+    bats.push(new Bats(800, 5750, 400, 200));
+    bats.push(new Bats(400, 10000, 650, 600));
 
     // "goomba" enemy
-    goombae[0] = new Goomba(2600, 1850, player, 2270, 2700);
-    goombae[1] = new Goomba(1200, 10300, player);
-    goombae[2] = new Goomba(1700, 10700, player);
-    goombae[3] = new Goomba(1500, 9500, player, 1100, 1800);
+    goombae.push(new Goomba(2600, 1850, player, 1600, 2700));
+    goombae.push(new Goomba(1200, 10300, player, 1080, 1320));
+    goombae.push(new Goomba(1700, 10700, player, 1500, 2600));
+    goombae.push(new Goomba(1500, 9500, player, 700, 1800));
 
     // angler enemies
-    anglers[0] = new Angler(850, 5000, player, "normal");
-    anglers[1] = new Angler(2000, 3100, player, "abnormal");
+    anglers.push(new Angler(850, 5000, player, "normal"));
+    anglers.push(new Angler(2000, 3100, player, "abnormal"));
 
     // pickups
-    pickups[0] = new Pickup("grapple", 12400, 7700);
-    pickups[1] = new Pickup("rangedWeapon", 100, 3200);
-    pickups[2] = new Pickup("nightVision", 300, 9500);
-    pickups[3] = new Pickup("redKey", 1900, 5800);
-    pickups[4] = new Pickup("blueKey", 2700, 11600);
+    pickups.push(new Pickup("grapple", 12400, 7700));
+    pickups.push(new Pickup("rangedWeapon", 100, 3200));
+    pickups.push(new Pickup("nightVision", 300, 9500));
+    pickups.push(new Pickup("redKey", 1900, 5800));
+    pickups.push(new Pickup("blueKey", 2700, 11600));
 
     goldKeyPickup = new Pickup("goldKey", 0, 0);
 }
