@@ -107,8 +107,9 @@ function events() {
 
         if (toggleSoundSwitch) {
             map3.sound.stop();
-            map3.sound = pianoHit;
+            map3.sound = mapSound1;
             map3.sound.loop();
+            pianoHit.play();
             toggleSoundSwitch = false;
         }
 
@@ -137,6 +138,63 @@ function events() {
 
 
 
+// sprite related functions
+
+    // handles map drawing
+    function drawMaps() {
+        
+        active_map.bgObject.draw();
+
+        if (active_map != map2) {
+            active_map.mapObject.draw();
+        }
+
+        else if (active_map == map2) {
+            player.raycastMechanic();            
+        }
+    
+        // run transitions
+        active_map.transitions();
+    }
+
+
+    // deletes all sprites of a map
+    function unloadMap(map) {
+
+        for (let block of map.bgObject.allBlocks) {
+            block.remove();
+        }
+        for (let block of map.mapObject.allBlocks) {
+            block.remove();
+        }
+
+        map.bgObject.allBlocks.removeSprites();
+        map.mapObject.allBlocks.removeSprites();
+        
+        map.active = false;
+    }
+
+
+    // remove sprite, use as callback in collisions
+    function projectileCleanup(a) {
+        a.remove();
+    }
+
+
+// damage
+function kill(a, b) {
+
+    if (a.health) {
+      a.health = 0;
+    }
+    
+    if (b.health) {
+      b.health = 0;
+    }
+  
+    player.health = 0;
+}
+
 let playerDialogue = {
 
     dialogueState: 0,
@@ -144,6 +202,7 @@ let playerDialogue = {
 
     d0Timer: 0,
     d1Timer: 0,
+    d2Timer: 0,
     d2switchChance: 0,
 
     runDialogue: function() {
@@ -187,7 +246,7 @@ let playerDialogue = {
     d1: function(x, y) {
 
         if (this.d1Timer < 240) {
-            text("Huh, never noticed that before.", x, y);
+            text("Huh, you'd think I would've noticed that before.", x, y);
         }
 
         this.d1Timer++;
@@ -319,63 +378,3 @@ let stankyDialogue = {
         }
     },
 }
-
-
-
-// sprite related functions
-
-    // handles map drawing
-    function mapHandler() {
-        
-        active_map.bgObject.draw();
-
-        if (active_map != map2) {
-            active_map.mapObject.draw();
-        }
-
-        else if (active_map == map2) {
-            player.raycastMechanic();            
-        }
-    
-        // run transitions
-        active_map.transitions();
-    }
-
-
-    // deletes all sprites of a map
-    function unloadMap(map) {
-
-        for (let block of map.bgObject.allBlocks) {
-            block.remove();
-        }
-        for (let block of map.mapObject.allBlocks) {
-            block.remove();
-        }
-
-        map.bgObject.allBlocks.removeSprites();
-        map.mapObject.allBlocks.removeSprites();
-        
-        map.active = false;
-    }
-
-
-    // remove sprite, use as callback in collisions
-    function projectileCleanup(a) {
-        a.remove();
-    }
-
-
-// damage
-function kill(a, b) {
-
-    if (a.health) {
-      a.health = 0;
-    }
-    
-    if (b.health) {
-      b.health = 0;
-    }
-  
-    player.health = 0;
-}
-

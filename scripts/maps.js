@@ -91,7 +91,7 @@ let map1 = {
         this.bgObject.generate(0, 0, this.bg_tilemap, mapAssets.bg_sky, mapAssets.bg_wood, mapAssets.bg_brick, mapAssets.bg_door);
 
         this.mapObject = new Tilemap(true);
-        this.mapObject.generate(0, 0, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone);
+        this.mapObject.generate(0, 0, this.main_tilemap, mapAssets.grey_brick, mapAssets.grass_brick, mapAssets.red_brick, mapAssets.wood, mapAssets.grass, mapAssets.stone, mapAssets.bg_sky);
         
         this.active = true;
 

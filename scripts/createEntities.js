@@ -42,7 +42,7 @@ function createEntities() {
     bats[2] = new Bats(400, 10000, 650, 600); // 
 
     // "goomba" enemy
-    goombae[0] = new Goomba(2600, 1850, player, 2400, 2700);
+    goombae[0] = new Goomba(2600, 1850, player, 2270, 2700);
     goombae[1] = new Goomba(1200, 10300, player);
     goombae[2] = new Goomba(1700, 10700, player);
     goombae[3] = new Goomba(1500, 9500, player, 1100, 1800);

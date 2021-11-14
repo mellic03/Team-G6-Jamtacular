@@ -98,6 +98,7 @@ function setup() {
     frameRate(60);
 
     player = new Player(300, 600, playerIdleSpritesheet, playerWalkSpritesheet);
+    testGoomba = new Goomba(1300, 400, player, 1000, 1600);
 
     createEntities();
 
@@ -110,7 +111,7 @@ function setup() {
 function draw() {
     background(0);
 
-    mapHandler();   // handles map events and interactivity (collision, transitions, raycasting)
+    drawMaps();   // handles map events and interactivity (collision, transitions, raycasting)
     
     drawEntities()
 
